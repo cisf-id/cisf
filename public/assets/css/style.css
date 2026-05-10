@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@custom-variant hover (&:hover);
+
+@layer base {
+  @font-face {
+    font-family: "Montserrat-ExtraLight";
+    src:
+      url("../fonts/Montserrat-ExtraLight.ttf") format("truetype");
+    font-weight: 200;
+    font-display: swap;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Montserrat-Light";
+    src:
+      url("../fonts/Montserrat-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-display: swap;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Montserrat-Regular";
+    src:
+      url("../fonts/Montserrat-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Montserrat-Medium";
+    src:
+      url("../fonts/Montserrat-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Montserrat-Bold";
+    src:
+      url("../fonts/Montserrat-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-display: swap;
+    font-style: normal;
+  }
+
+  * {
+    font-family: "Montserrat-Regular", sans-serif;
+  }
+}
+
+@layer components {
+  .reveal, .reveal-left, .reveal-right {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal-left { transform: translateX(-80px); }
+  .reveal-right { transform: translateX(80px); }
+  .reveal.in-view, .reveal-left.in-view, .reveal-right.in-view {
+    opacity: 1;
+    transform: none;
+  }
+}
