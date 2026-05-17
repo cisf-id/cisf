@@ -4,7 +4,7 @@ const { data: researchData, pending } = useFetch("/api/research/top5Research")
 
 function extractAbstract(content: string | undefined): string {
   if (!content) return ''
-  const stripped = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  const stripped = content.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
   return stripped.length > 300 ? stripped.slice(0, 300) + '…' : stripped
 }
 
@@ -108,12 +108,12 @@ const toggle = (i: number) => {
               </div>
 
               <!-- Judul -->
-              <p class="text-[14px] sm:text-[15px] font-medium leading-snug text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors pr-4">
+              <p class="text-[14px] sm:text-[15px] font-medium leading-snug text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors pr-4 break-words">
                 {{ research.title }}
               </p>
 
               <!-- Author & date -->
-              <p class="text-[11px] text-gray-400 mt-1">
+              <p class="text-[11px] text-gray-400 mt-1 break-words">
                 {{ research.author }}
                 <span class="mx-1 text-gray-200 dark:text-white/20">·</span>
                 {{ research.date }}
@@ -141,7 +141,7 @@ const toggle = (i: number) => {
               style="max-height: 0;"
             >
               <div class="pb-4 pl-8">
-                <p class="text-[12.5px] text-gray-500 dark:text-gray-400 leading-relaxed">
+                <p class="text-[12.5px] text-gray-500 dark:text-gray-400 leading-relaxed break-words">
                   {{ research.abstract || 'Abstrak tidak tersedia.' }}
                 </p>
                 <NuxtLink

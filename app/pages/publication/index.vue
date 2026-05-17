@@ -152,6 +152,7 @@ function extractAbstract(content: string | undefined): string {
   // Bersihkan HTML tags dan whitespace berlebih
   const stripped = abstractContent
     .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
   
@@ -346,19 +347,19 @@ const changePage = async (i: number) => {
               </div>
 
               <!-- Title -->
-              <h2 class="text-[15px] sm:text-base font-semibold leading-snug text-blue-700 group-hover:text-blue-800 group-hover:underline underline-offset-2 mb-1.5 transition-colors">
+              <h2 class="text-[15px] sm:text-base font-semibold leading-snug text-blue-700 group-hover:text-blue-800 group-hover:underline underline-offset-2 mb-1.5 transition-colors break-words">
                 {{ pub.title }}
               </h2>
 
               <!-- Author & date -->
-              <p class="text-[12px] text-gray-500 mb-2">
+              <p class="text-[12px] text-gray-500 mb-2 break-words">
                 <span class="font-medium text-gray-700">{{ pub.author }}</span>
                 <span class="mx-1.5 text-gray-300">·</span>
                 <span>{{ pub.date }}</span>
               </p>
 
               <!-- Abstract snippet -->
-              <p v-if="pub.abstract" class="text-[12.5px] text-gray-500 leading-relaxed line-clamp-2">
+              <p v-if="pub.abstract" class="text-[12.5px] text-gray-500 leading-relaxed line-clamp-2 break-words">
                 {{ pub.abstract }}
               </p>
 
