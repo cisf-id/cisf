@@ -376,7 +376,7 @@ const changePage = async (i: number) => {
           <!-- Pagination -->
           <div
             v-if="!pending && publications.length && (hasNext || hasPrev)"
-            class="flex justify-center items-center gap-3 mt-12"
+            class="flex flex-wrap justify-center items-center gap-3 mt-12"
           >
             <button
               @click="goPrev"
