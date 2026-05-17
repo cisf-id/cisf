@@ -2,7 +2,7 @@
 const instagramPosts = [
   {
     id: '1',
-    image: 'https://instagram.fsub7-1.fna.fbcdn.net/v/t51.82787-15/688578672_17912517123385890_3307608076244971137_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=Mzg5MDg2NzY3NzQwOTkwNzg1Mg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=PgXmDss0SlUQ7kNvwEzTQm3&_nc_oc=Adpr-L8h9HZKTyqJ05w7_aiPMxnFw-0OZU6sEwhdvTOdliiiJ6MfagzSrqk78Yqh6cyM3O6OZuZ2AjE_-jzyoE9V&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fsub7-1.fna&_nc_gid=FaGEIOWu6Hr4LsOUBSbLkg&_nc_ss=7a22e&oh=00_Af7w-77kqP7CkBy5s15m6wBbtFC8CmsNH3Y50ZeY34ngAg&oe=6A02BDC6', // ganti: post.media_url dari API
+    image: '/assets/img/1stpost.jpg',
     likes: 12,
     comments: 1,
     type: 'IMAGE', 
@@ -10,7 +10,7 @@ const instagramPosts = [
   },
   {
     id: '2',
-    image: 'https://instagram.fsub7-1.fna.fbcdn.net/v/t51.82787-15/684525447_17912372625385890_4142623682442937111_n.jpg?stp=dst-jpg_e35_p1080x1080_tt6&_nc_cat=100&ig_cache_key=Mzg5MDE5MTI2MDAzNjEwMTA1Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTM1MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=BPWhxwj-jYwQ7kNvwFKqkgq&_nc_oc=Adr7S6f6pRM5apa74JtJ-4jLysMXCrnYIJEQxkwA-mOfg0dwwPNzBN2Ddb0qKGI9U456igxs-HJECWWp5t5dV2qZ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fsub7-1.fna&_nc_gid=FaGEIOWu6Hr4LsOUBSbLkg&_nc_ss=7a22e&oh=00_Af5nK9crxuWwqzpskAxIfYc20KyOiyMuN6v0PCKcqHc1Xw&oe=6A02B1F5',
+    image: '/assets/img/2ndpost.jpg',
     likes: 65,
     comments: 4,
     type: 'IMAGE',
@@ -18,7 +18,7 @@ const instagramPosts = [
   },
   {
     id: '3',
-    image: 'https://instagram.fsub7-1.fna.fbcdn.net/v/t51.82787-15/684393322_17911610799385890_8086479692369573361_n.jpg?stp=dst-jpg_e35_p1080x1080_tt6&_nc_cat=101&ig_cache_key=Mzg4Nzc1Mzk0MjY0NjYwOTc1OQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=95ZuQNMrdWIQ7kNvwEjDArr&_nc_oc=AdpjUcjTglHXc26fRZUZ0kbj5S_w1__5ZWAAPae1ubyhyaPsMn9WW-DlRpx9QtYp1OMFG1wN8OZiLxEjnljVgXxR&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fsub7-1.fna&_nc_gid=FaGEIOWu6Hr4LsOUBSbLkg&_nc_ss=7a22e&oh=00_Af5Ff7x9KclP6syxXYKWDrjh0Qa-cPNeFFUx_hN3y7y-zQ&oe=6A02D2EB',
+    image: '/assets/img/3rdpost.jpg',
     likes: 3,
     comments: 0,
     type: 'IMAGE',
@@ -26,7 +26,7 @@ const instagramPosts = [
   },
   {
     id: '4',
-    image: 'https://instagram.fsub7-1.fna.fbcdn.net/v/t51.82787-15/682689756_17911638036385890_4066032907474844486_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ig_cache_key=Mzg4Njk1Mzg4ODQ2MTU2Nzc0Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=dgMU0N7WLjgQ7kNvwEAPFXT&_nc_oc=AdphCAuv2GqzOT_CW2h7d-ZKrEcXLo2lEZLc-Frf12FXNzgpIE7T2Gwfiaicpj3oR8vqAA1RX9TlA0pbrneNbkfa&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fsub7-1.fna&_nc_gid=tgI4HhFtiSxVRTf50QgNsA&_nc_ss=7a22e&oh=00_Af6XlkPn-aEn12X_iiprcygXMBtQqrp5zTuxd3OCOX4aXQ&oe=6A02B31B',
+    image: '/assets/img/4thpost.jpg',
     likes: 10,
     comments: 0,
     type: 'CAROUSEL_ALBUM',
@@ -34,7 +34,7 @@ const instagramPosts = [
   },
   {
     id: '5',
-    image: 'https://instagram.fsub7-1.fna.fbcdn.net/v/t51.82787-15/682811325_17858721453689723_3894184327937810604_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=Mzg4NjU0MDIxNzgxMzg5Nzc3MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=YB_PvgtRF5gQ7kNvwEohfbK&_nc_oc=Adp3WnvdcoEMOx2KQUxbhZ7GdjKOLXehr2ta0r-JuYGPyrdSD47JAWEUAM141m2sfiDYEn4ajeWaheRG8bZ4XuGJ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fsub7-1.fna&_nc_gid=tgI4HhFtiSxVRTf50QgNsA&_nc_ss=7a22e&oh=00_Af4fsGyg7qvNe67E5052gnEDW54RsFm5Ehh8I7Hg5fsGrg&oe=6A02C27E',
+    image: '/assets/img/5thpost.jpg',
     likes: 0,
     comments: 9,
     type: 'IMAGE',
