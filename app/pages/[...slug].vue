@@ -20,7 +20,12 @@ interface Post {
 function extractImage(content: string | undefined): string | null {
   if (!content) return null
   const match = content.match(/<img[^>]+src="([^">]+)"/)
-  return match?.[1] ?? null
+  const url = match?.[1]
+  if (!url) return null
+  
+  return url
+    .replace(/\/(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)\//g, '/s0/')
+    .replace(/=(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)(?=[&"]|$)/g, '=s0')
 }
 
 function stripFirstImage(content: string | undefined): string {
@@ -62,11 +67,21 @@ const cleanContent = (html: string) => {
   if (!html) return ''
   
   // Hapus inline style background-color dan font-family
-  return html
+  let cleaned = html
     .replace(/\s*background-color:\s*[^;'"]+;?/gi, '')
     .replace(/\s*font-family:\s*[^;'"]+;?/gi, '')
     // Hapus attribute style yang kosong
     .replace(/\s*style=["']\s*["']/gi, '')
+    
+  // Ganti URL gambar agar tidak blur (menggunakan ukuran original /s0/ atau =s0)
+  cleaned = cleaned.replace(/src="([^"]+)"/g, (match, url) => {
+    const newUrl = url
+      .replace(/\/(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)\//g, '/s0/')
+      .replace(/=(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)(?=[&"]|$)/g, '=s0')
+    return `src="${newUrl}"`
+  })
+  
+  return cleaned
 }
 </script>
 
