@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Bar, Line } from 'vue-chartjs'
+import { Bar, Line, Pie } from 'vue-chartjs'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
-  BarElement, LineElement, PointElement,
-  Filler, Tooltip
+  BarElement, LineElement, PointElement, ArcElement,
+  Filler, Tooltip, Legend
 } from 'chart.js'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, Tooltip)
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Filler, Tooltip, Legend)
 
 useSeoMeta({
   title: 'Statistics — CISF',
@@ -37,6 +37,17 @@ const baseOptions = {
   }
 }
 
+const pieOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { 
+    legend: { 
+      position: 'bottom' as const,
+      labels: { font: { size: 11 }, padding: 15, usePointStyle: true }
+    } 
+  },
+}
+
 // Data Zakat
 const zakatBarData = {
   labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
@@ -52,13 +63,14 @@ const zakatMetrics = [
   { label: 'Muzakki Aktif', value: '4.2 Jt', sub: 'dari 93 jt wajib zakat', badge: { text: 'Rendah', type: 'down' } },
   { label: 'Pertumbuhan YoY', value: '+18.4%', sub: 'Penerimaan 2023–2024', badge: { text: 'Naik', type: 'up' } },
 ]
-const zakatBars = [
-  { label: 'Zakat Penghasilan', pct: 54 },
-  { label: 'Zakat Perdagangan', pct: 22 },
-  { label: 'Zakat Fitrah', pct: 14 },
-  { label: 'Zakat Pertanian', pct: 6 },
-  { label: 'Lainnya', pct: 4 },
-]
+const zakatPieData = {
+  labels: ['Penghasilan', 'Perdagangan', 'Fitrah', 'Pertanian', 'Lainnya'],
+  datasets: [{
+    data: [54, 22, 14, 6, 4],
+    backgroundColor: ['#eeba4b', '#f5d688', '#d19824', '#f8e6b3', '#a17215'],
+    borderWidth: 0,
+  }]
+}
 
 // Data Wakaf
 const wakafLineData = {
@@ -77,11 +89,14 @@ const wakafMetrics = [
   { label: 'Infak Digital/Bulan', value: 'Rp 89 M', sub: 'Platform online', badge: { text: '▲ 23%', type: 'up' } },
   { label: 'Produktivitas Lahan', value: '56%', sub: '44% butuh inkubasi', badge: { text: 'Perlu Dorong', type: 'warn' } },
 ]
-const wakafBars = [
-  { label: 'Lahan Produktif', pct: 56, color: '#639922' },
-  { label: 'Non-Produktif', pct: 30, color: '#E24B4A' },
-  { label: 'Dalam Proses', pct: 14, color: '#BA7517' },
-]
+const wakafPieData = {
+  labels: ['Lahan Produktif', 'Non-Produktif', 'Dalam Proses'],
+  datasets: [{
+    data: [56, 30, 14],
+    backgroundColor: ['#639922', '#E24B4A', '#BA7517'],
+    borderWidth: 0,
+  }]
+}
 
 // Data Finance
 const financeLineData = {
@@ -100,16 +115,22 @@ const financeMetrics = [
   { label: 'Jumlah Bank Syariah', value: '13 BUS', sub: '+ 20 UUS aktif', badge: null },
   { label: 'Pembiayaan Murabahah', value: '48.3%', sub: 'Dominasi akad', badge: null },
 ]
-const financeBars = [
-  { label: 'Konvensional', pct: 93, color: '#888780' },
-  { label: 'Syariah', pct: 7, color: '#eeba4b' },
-]
-const pembiayaanBars = [
-  { label: 'Murabahah', pct: 48 },
-  { label: 'Musyarakah', pct: 29 },
-  { label: 'Mudharabah', pct: 13 },
-  { label: 'Lainnya', pct: 10 },
-]
+const financeAsetPieData = {
+  labels: ['Konvensional', 'Syariah'],
+  datasets: [{
+    data: [93, 7],
+    backgroundColor: ['#888780', '#eeba4b'],
+    borderWidth: 0,
+  }]
+}
+const pembiayaanPieData = {
+  labels: ['Murabahah', 'Musyarakah', 'Mudharabah', 'Lainnya'],
+  datasets: [{
+    data: [48, 29, 13, 10],
+    backgroundColor: ['#534AB7', '#7b74cc', '#3b3484', '#a19de0'],
+    borderWidth: 0,
+  }]
+}
 
 // Indeks Umat
 const indeksMetrics = [
@@ -118,11 +139,14 @@ const indeksMetrics = [
   { label: 'Literasi Keuangan Umum', value: '49.6%', sub: 'Nasional', badge: { text: 'Sedang', type: 'warn' } },
   { label: 'IPM Basis Pesantren', value: '67.4', sub: 'Di bawah rata-rata', badge: { text: 'Perhatian', type: 'warn' } },
 ]
-const indeksBars = [
-  { label: 'Literasi Syariah', pct: 9.1, color: '#E24B4A' },
-  { label: 'Literasi Umum', pct: 49.6, color: '#BA7517' },
-  { label: 'Target 2030', pct: 75, color: '#639922' },
-]
+const indeksPieData = {
+  labels: ['Literasi Syariah', 'Literasi Umum', 'Target 2030'],
+  datasets: [{
+    data: [9.1, 49.6, 75],
+    backgroundColor: ['#E24B4A', '#BA7517', '#639922'],
+    borderWidth: 0,
+  }]
+}
 
 const { data: articlesData } = await useFetch('/api/blog/posts', {
   default: () => ({ items: [] })
@@ -208,16 +232,11 @@ const badgeClass = (type: string) => ({
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            <!-- Bar breakdown -->
+            <!-- Pie breakdown -->
             <div v-reveal-left>
               <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Distribusi per Sektor</p>
-              <div v-for="b in zakatBars" :key="b.label" class="mb-3">
-                <div class="flex justify-between text-[12px] text-gray-600 dark:text-gray-400 mb-1.5">
-                  <span>{{ b.label }}</span><span>{{ b.pct }}%</span>
-                </div>
-                <div class="h-2 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
-                  <div class="h-full rounded-full bg-[#eeba4b] transition-all duration-700" :style="{ width: b.pct + '%' }"></div>
-                </div>
+              <div class="h-48 md:h-56">
+                <Pie :data="zakatPieData" :options="pieOptions" />
               </div>
             </div>
 
@@ -235,7 +254,7 @@ const badgeClass = (type: string) => ({
             <p class="text-[13px] text-gray-600 dark:text-gray-300 leading-relaxed italic">
               "Jurang antara potensi dan realisasi masih sangat lebar. Digitalisasi dan literasi menjadi kunci membuka 90% potensi yang belum tergarap."
             </p>
-            <cite class="text-[11px] text-gray-400 mt-2 block not-italic">— Riset CISF, 2024</cite>
+            <cite class="text-[11px] text-gray-400 mt-2 block not-italic font-medium">— Sumber Data: BAZNAS (Badan Amil Zakat Nasional) & Riset CISF 2024</cite>
           </blockquote>
         </div>
       </section>
@@ -264,13 +283,8 @@ const badgeClass = (type: string) => ({
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <div v-reveal-left>
               <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Status Lahan Wakaf</p>
-              <div v-for="b in wakafBars" :key="b.label" class="mb-3">
-                <div class="flex justify-between text-[12px] text-gray-600 dark:text-gray-400 mb-1.5">
-                  <span>{{ b.label }}</span><span>{{ b.pct }}%</span>
-                </div>
-                <div class="h-2 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
-                  <div class="h-full rounded-full transition-all duration-700" :style="{ width: b.pct + '%', background: b.color }"></div>
-                </div>
+              <div class="h-48 md:h-56">
+                <Pie :data="wakafPieData" :options="pieOptions" />
               </div>
             </div>
             <div v-reveal-right>
@@ -308,24 +322,14 @@ const badgeClass = (type: string) => ({
             <div v-reveal-left class="space-y-6">
               <div>
                 <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Distribusi Aset Perbankan</p>
-                <div v-for="b in financeBars" :key="b.label" class="mb-3">
-                  <div class="flex justify-between text-[12px] text-gray-600 dark:text-gray-400 mb-1.5">
-                    <span>{{ b.label }}</span><span>{{ b.pct }}%</span>
-                  </div>
-                  <div class="h-2 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full transition-all duration-700" :style="{ width: b.pct + '%', background: b.color }"></div>
-                  </div>
+                <div class="h-40 md:h-48">
+                  <Pie :data="financeAsetPieData" :options="pieOptions" />
                 </div>
               </div>
               <div>
                 <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Komposisi Pembiayaan</p>
-                <div v-for="b in pembiayaanBars" :key="b.label" class="mb-3">
-                  <div class="flex justify-between text-[12px] text-gray-600 dark:text-gray-400 mb-1.5">
-                    <span>{{ b.label }}</span><span>{{ b.pct }}%</span>
-                  </div>
-                  <div class="h-2 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full bg-[#534AB7] transition-all duration-700" :style="{ width: b.pct + '%' }"></div>
-                  </div>
+                <div class="h-40 md:h-48">
+                  <Pie :data="pembiayaanPieData" :options="pieOptions" />
                 </div>
               </div>
             </div>
@@ -362,13 +366,8 @@ const badgeClass = (type: string) => ({
 
           <div v-reveal class="max-w-lg">
             <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Perbandingan Literasi (%)</p>
-            <div v-for="b in indeksBars" :key="b.label" class="mb-3">
-              <div class="flex justify-between text-[12px] text-gray-600 dark:text-gray-400 mb-1.5">
-                <span>{{ b.label }}</span><span>{{ b.pct }}%</span>
-              </div>
-              <div class="h-2 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
-                <div class="h-full rounded-full transition-all duration-700" :style="{ width: b.pct + '%', background: b.color }"></div>
-              </div>
+            <div class="h-40 md:h-48">
+              <Pie :data="indeksPieData" :options="pieOptions" />
             </div>
           </div>
 
@@ -376,6 +375,7 @@ const badgeClass = (type: string) => ({
             <p class="text-[13px] text-gray-600 dark:text-gray-300 leading-relaxed italic">
               "Literasi adalah benteng pertahanan ekonomi umat yang paling rapuh saat ini."
             </p>
+            <cite class="text-[11px] text-gray-400 mt-2 block not-italic font-medium">— Sumber Data: BPS & Survei Literasi Keuangan OJK 2024</cite>
           </blockquote>
         </div>
       </section>
