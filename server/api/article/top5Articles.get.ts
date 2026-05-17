@@ -25,12 +25,6 @@ export default defineEventHandler(async (event) => {
             },
           }
         );
-      },
-      {
-        name: 'Article-posts',
-        maxAge: 60 * 10,
-        staleMaxAge: 60 * 60,
-        getKey: (label) => `top5Article-${label}`,
       }
     );
 

@@ -22,12 +22,6 @@ export default defineEventHandler(async (event) => {
             },
           }
         );
-      },
-      {
-        name: 'detail-posts',
-        maxAge: 60 * 10,
-        staleMaxAge: 60 * 60,
-        getKey: (slug) => `detail-${slug}`,
       }
     );
     
