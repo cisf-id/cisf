@@ -140,7 +140,7 @@ const articles = computed(() => {
     label: p.labels?.[0] ?? 'Riset',
     date: new Date(p.published).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
     image: extractImage(p.content),
-    url: `/blog/${p.id}`,
+    url: `/article/${p.id}`,
   }))
 })
 
@@ -385,7 +385,7 @@ const badgeClass = (type: string) => ({
               <h2 class="text-xl sm:text-2xl font-medium">Artikel Terkait</h2>
               <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3"></div>
             </div>
-            <NuxtLink to="/blog" class="text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-1.5 group">
+            <NuxtLink to="/article" class="text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-1.5 group">
               Semua
               <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
                 <path d="M3 8h10M9 4l4 4-4 4"/>
