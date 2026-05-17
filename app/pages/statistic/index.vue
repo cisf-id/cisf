@@ -191,6 +191,7 @@ const badgeClass = (type: string) => ({
           <div v-reveal>
             <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Zakat Watch</p>
             <h2 class="text-xl sm:text-2xl font-medium">Potensi vs Realisasi Zakat Nasional</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Badan Amil Zakat Nasional (BAZNAS)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -245,6 +246,7 @@ const badgeClass = (type: string) => ({
           <div v-reveal>
             <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Wakaf & Infak</p>
             <h2 class="text-xl sm:text-2xl font-medium">Aset Wakaf & Tren Infak Digital</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Badan Wakaf Indonesia (BWI)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -287,6 +289,7 @@ const badgeClass = (type: string) => ({
           <div v-reveal>
             <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Islamic Finance</p>
             <h2 class="text-xl sm:text-2xl font-medium">Perbankan Syariah Indonesia</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Otoritas Jasa Keuangan (OJK)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -342,6 +345,7 @@ const badgeClass = (type: string) => ({
           <div v-reveal>
             <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Indeks Umat</p>
             <h2 class="text-xl sm:text-2xl font-medium">Kemiskinan & Literasi Keuangan</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Bank Indonesia (BI) & Badan Pusat Statistik (BPS)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
