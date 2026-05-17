@@ -24,8 +24,8 @@ function extractImage(content: string | undefined): string | null {
   if (!url) return null
   
   return url
-    .replace(/\/(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)\//g, '/s0/')
-    .replace(/=(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)(?=[&"]|$)/g, '=s0')
+    .replace(/\/(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*\//g, '/s0/')
+    .replace(/=(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*(?=[&"]|$)/g, '=s0')
 }
 
 function stripFirstImage(content: string | undefined): string {
@@ -76,8 +76,8 @@ const cleanContent = (html: string) => {
   // Ganti URL gambar agar tidak blur (menggunakan ukuran original /s0/ atau =s0)
   cleaned = cleaned.replace(/src="([^"]+)"/g, (match, url) => {
     const newUrl = url
-      .replace(/\/(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)\//g, '/s0/')
-      .replace(/=(s\d+|w\d+-h\d+(-[a-zA-Z0-9-]+)?)(?=[&"]|$)/g, '=s0')
+      .replace(/\/(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*\//g, '/s0/')
+      .replace(/=(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*(?=[&"]|$)/g, '=s0')
     return `src="${newUrl}"`
   })
   
