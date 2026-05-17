@@ -14,12 +14,6 @@ export default defineEventHandler(async (event) => {
             },
           }
         );
-      },
-      {
-        name: 'research-posts',
-        maxAge: 60 * 10,
-        staleMaxAge: 60 * 60,
-        getKey: (label) => `top5Pub-${label}`,
       }
     );
 
