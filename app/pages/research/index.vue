@@ -204,7 +204,7 @@ const research = computed(() => {
     </div>
 
     <div class="container mx-auto px-6 py-6">
-      <div class="flex flex-col lg:flex-row gap-6 items-start">
+      <div class="flex flex-col lg:flex-row gap-6 items-stretch lg:items-start">
         <!-- ── SIDEBAR FILTER ── -->
         <aside class="w-full lg:w-64 flex-shrink-0" v-reveal>
           <div class="bg-white border border-gray-200 rounded-lg overflow-hidden sticky top-24">
@@ -296,7 +296,7 @@ const research = computed(() => {
         </aside>
 
         <!-- ── MAIN RESULTS ── -->
-        <div class="flex-1 min-w-0">
+        <div class="flex-1 w-full lg:w-auto min-w-0">
           <!-- Result count bar -->
           <div v-if="query != ''" class="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
             <p class="text-sm text-gray-500">
