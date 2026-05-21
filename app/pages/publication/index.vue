@@ -2,7 +2,7 @@
 const loadingStore = useLoadingStore()
 const route = useRoute()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 useSeoMeta({
   title: () => `${t('publication.label')} — CISF`,
