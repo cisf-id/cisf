@@ -8,18 +8,25 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Filler, Tooltip, Legend)
 
+const { t, locale } = useI18n()
+
 useSeoMeta({
-  title: 'Statistics — CISF',
-  description: 'Data keuangan sosial Islam dalam format visual interaktif'
+  title: () => `${t('page.statistics')} — CISF`,
+  description: () => locale.value === 'en' ? 'Islamic social finance data in an interactive visual format' : 'Data keuangan sosial Islam dalam format visual interaktif'
 })
 
 const activeSection = ref('zakat')
-const sections = [
+const sections = computed(() => locale.value === 'en' ? [
+  { id: 'zakat', label: 'Zakat Watch' },
+  { id: 'wakaf', label: 'Waqf & Infaq' },
+  { id: 'finance', label: 'Islamic Finance' },
+  { id: 'indeks', label: 'Ummah Index' },
+] : [
   { id: 'zakat', label: 'Zakat Watch' },
   { id: 'wakaf', label: 'Wakaf & Infak' },
   { id: 'finance', label: 'Islamic Finance' },
   { id: 'indeks', label: 'Indeks Umat' },
-]
+])
 
 const scrollTo = (id: string) => {
   activeSection.value = id
@@ -57,20 +64,27 @@ const zakatBarData = {
     borderRadius: 4,
   }]
 }
-const zakatMetrics = [
+const zakatMetrics = computed(() => locale.value === 'en' ? [
+  { label: 'Zakat Potential', value: 'Rp 327 T', sub: 'BAZNAS Estimate 2024', badge: null },
+  { label: 'Collected Realization', value: 'Rp 33 T', sub: '10% of potential', badge: { text: '90% Gap', type: 'warn' } },
+  { label: 'Active Muzakki', value: '4.2 M', sub: 'out of 93M obliged', badge: { text: 'Low', type: 'down' } },
+  { label: 'YoY Growth', value: '+18.4%', sub: 'Revenue 2023–2024', badge: { text: 'Up', type: 'up' } },
+] : [
   { label: 'Potensi Zakat', value: 'Rp 327 T', sub: 'Estimasi BAZNAS 2024', badge: null },
   { label: 'Realisasi Terkumpul', value: 'Rp 33 T', sub: '10% dari potensi', badge: { text: 'Gap 90%', type: 'warn' } },
   { label: 'Muzakki Aktif', value: '4.2 Jt', sub: 'dari 93 jt wajib zakat', badge: { text: 'Rendah', type: 'down' } },
   { label: 'Pertumbuhan YoY', value: '+18.4%', sub: 'Penerimaan 2023–2024', badge: { text: 'Naik', type: 'up' } },
-]
-const zakatPieData = {
-  labels: ['Penghasilan', 'Perdagangan', 'Fitrah', 'Pertanian', 'Lainnya'],
+])
+const zakatPieData = computed(() => ({
+  labels: locale.value === 'en' 
+    ? ['Income', 'Trade', 'Fitrah', 'Agriculture', 'Others'] 
+    : ['Penghasilan', 'Perdagangan', 'Fitrah', 'Pertanian', 'Lainnya'],
   datasets: [{
     data: [54, 22, 14, 6, 4],
     backgroundColor: ['#eeba4b', '#f5d688', '#d19824', '#f8e6b3', '#a17215'],
     borderWidth: 0,
   }]
-}
+}))
 
 // Data Wakaf
 const wakafLineData = {
@@ -83,20 +97,27 @@ const wakafLineData = {
     pointBackgroundColor: '#1D9E75'
   }]
 }
-const wakafMetrics = [
+const wakafMetrics = computed(() => locale.value === 'en' ? [
+  { label: 'Land Waqf Assets', value: '420k ha', sub: 'Spread across 500k locations', badge: null },
+  { label: 'Collected Cash Waqf', value: 'Rp 1.4 T', sub: '▲ 15% YoY', badge: { text: 'Productive', type: 'up' } },
+  { label: 'Digital Infaq/Month', value: 'Rp 89 B', sub: 'Online platforms', badge: { text: '▲ 23%', type: 'up' } },
+  { label: 'Land Productivity', value: '56%', sub: '44% need incubation', badge: { text: 'Needs Push', type: 'warn' } },
+] : [
   { label: 'Aset Wakaf Tanah', value: '420 rb ha', sub: 'Tersebar 500 rb lokasi', badge: null },
   { label: 'Wakaf Uang Terkumpul', value: 'Rp 1.4 T', sub: '▲ 15% YoY', badge: { text: 'Produktif', type: 'up' } },
   { label: 'Infak Digital/Bulan', value: 'Rp 89 M', sub: 'Platform online', badge: { text: '▲ 23%', type: 'up' } },
   { label: 'Produktivitas Lahan', value: '56%', sub: '44% butuh inkubasi', badge: { text: 'Perlu Dorong', type: 'warn' } },
-]
-const wakafPieData = {
-  labels: ['Lahan Produktif', 'Non-Produktif', 'Dalam Proses'],
+])
+const wakafPieData = computed(() => ({
+  labels: locale.value === 'en' 
+    ? ['Productive Land', 'Non-Productive', 'In Process'] 
+    : ['Lahan Produktif', 'Non-Produktif', 'Dalam Proses'],
   datasets: [{
     data: [56, 30, 14],
     backgroundColor: ['#639922', '#E24B4A', '#BA7517'],
     borderWidth: 0,
   }]
-}
+}))
 
 // Data Finance
 const financeLineData = {
@@ -109,44 +130,54 @@ const financeLineData = {
     pointBackgroundColor: '#534AB7'
   }]
 }
-const financeMetrics = [
+const financeMetrics = computed(() => locale.value === 'en' ? [
+  { label: 'Market Share', value: '7.03%', sub: 'Stagnant below 10%', badge: { text: 'Stagnant', type: 'warn' } },
+  { label: 'Total Assets', value: 'Rp 868 T', sub: '▲ 9.2% YoY', badge: { text: 'Growing', type: 'up' } },
+  { label: 'Islamic Banks', value: '13 BUS', sub: '+ 20 UUS active', badge: null },
+  { label: 'Murabahah Financing', value: '48.3%', sub: 'Contract dominance', badge: null },
+] : [
   { label: 'Market Share', value: '7.03%', sub: 'Stagnan di bawah 10%', badge: { text: 'Stagnan', type: 'warn' } },
   { label: 'Total Aset', value: 'Rp 868 T', sub: '▲ 9.2% YoY', badge: { text: 'Tumbuh', type: 'up' } },
   { label: 'Jumlah Bank Syariah', value: '13 BUS', sub: '+ 20 UUS aktif', badge: null },
   { label: 'Pembiayaan Murabahah', value: '48.3%', sub: 'Dominasi akad', badge: null },
-]
-const financeAsetPieData = {
-  labels: ['Konvensional', 'Syariah'],
+])
+const financeAsetPieData = computed(() => ({
+  labels: locale.value === 'en' ? ['Conventional', 'Islamic'] : ['Konvensional', 'Syariah'],
   datasets: [{
     data: [93, 7],
     backgroundColor: ['#888780', '#eeba4b'],
     borderWidth: 0,
   }]
-}
-const pembiayaanPieData = {
-  labels: ['Murabahah', 'Musyarakah', 'Mudharabah', 'Lainnya'],
+}))
+const pembiayaanPieData = computed(() => ({
+  labels: locale.value === 'en' ? ['Murabahah', 'Musyarakah', 'Mudharabah', 'Others'] : ['Murabahah', 'Musyarakah', 'Mudharabah', 'Lainnya'],
   datasets: [{
     data: [48, 29, 13, 10],
     backgroundColor: ['#534AB7', '#7b74cc', '#3b3484', '#a19de0'],
     borderWidth: 0,
   }]
-}
+}))
 
 // Indeks Umat
-const indeksMetrics = [
+const indeksMetrics = computed(() => locale.value === 'en' ? [
+  { label: 'Poverty Rate', value: '9.5%', sub: 'Muslim Population', badge: { text: 'Critical', type: 'down' } },
+  { label: 'Islamic Fin. Literacy', value: '9.1%', sub: 'Very low', badge: { text: 'Low', type: 'down' } },
+  { label: 'General Fin. Literacy', value: '49.6%', sub: 'National', badge: { text: 'Medium', type: 'warn' } },
+  { label: 'Pesantren HDI', value: '67.4', sub: 'Below average', badge: { text: 'Attention', type: 'warn' } },
+] : [
   { label: 'Tingkat Kemiskinan', value: '9.5%', sub: 'Penduduk Muslim', badge: { text: 'Kritis', type: 'down' } },
   { label: 'Literasi Keuangan Syariah', value: '9.1%', sub: 'Sangat rendah', badge: { text: 'Rendah', type: 'down' } },
   { label: 'Literasi Keuangan Umum', value: '49.6%', sub: 'Nasional', badge: { text: 'Sedang', type: 'warn' } },
   { label: 'IPM Basis Pesantren', value: '67.4', sub: 'Di bawah rata-rata', badge: { text: 'Perhatian', type: 'warn' } },
-]
-const indeksPieData = {
-  labels: ['Literasi Syariah', 'Literasi Umum', 'Target 2030'],
+])
+const indeksPieData = computed(() => ({
+  labels: locale.value === 'en' ? ['Islamic Literacy', 'General Literacy', 'Target 2030'] : ['Literasi Syariah', 'Literasi Umum', 'Target 2030'],
   datasets: [{
     data: [9.1, 49.6, 75],
     backgroundColor: ['#E24B4A', '#BA7517', '#639922'],
     borderWidth: 0,
   }]
-}
+}))
 
 const { data: articlesData } = await useFetch('/api/blog/posts', {
   default: () => ({ items: [] })
@@ -160,9 +191,9 @@ const articles = computed(() => {
   if (!(articlesData.value as any)?.items) return []
   return (articlesData.value as any).items.slice(0, 6).map((p: any) => ({
     id: p.id,
-    title: p.title,
-    label: p.labels?.[0] ?? 'Riset',
-    date: new Date(p.published).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+    title: parseLocaleText(p.title, locale.value),
+    label: parseLocaleText(p.labels?.[0] ?? 'Riset', locale.value),
+    date: new Date(p.published).toLocaleDateString(locale.value === 'en' ? 'en-US' : 'id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
     image: extractImage(p.content),
     url: `/article/${p.id}`,
   }))
@@ -183,9 +214,9 @@ const badgeClass = (type: string) => ({
       <div class="container mx-auto px-4 sm:px-6">
         <div v-reveal>
           <p class="text-[10px] tracking-widest uppercase text-[#eeba4b] mb-2">Data & Visual</p>
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-medium text-white mb-3">Statistik</h1>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-medium text-white mb-3">{{ $t('page.statistics') }}</h1>
           <p class="text-sm text-white/50 max-w-lg leading-relaxed">
-            Data dan temuan riset CISF dalam format visual — zakat, wakaf, perbankan syariah, dan indeks kesejahteraan umat.
+            {{ locale === 'en' ? 'Data and research findings of CISF in a visual format — zakat, waqf, Islamic banking, and ummah welfare index.' : 'Data dan temuan riset CISF dalam format visual — zakat, wakaf, perbankan syariah, dan indeks kesejahteraan umat.' }}
           </p>
         </div>
 
@@ -214,8 +245,8 @@ const badgeClass = (type: string) => ({
         <div class="container mx-auto px-4 sm:px-6">
           <div v-reveal>
             <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Zakat Watch</p>
-            <h2 class="text-xl sm:text-2xl font-medium">Potensi vs Realisasi Zakat Nasional</h2>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Badan Amil Zakat Nasional (BAZNAS)</p>
+            <h2 class="text-xl sm:text-2xl font-medium">{{ locale === 'en' ? 'Potential vs Realization of National Zakat' : 'Potensi vs Realisasi Zakat Nasional' }}</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">{{ locale === 'en' ? 'Data Source:' : 'Sumber Data:' }} Badan Amil Zakat Nasional (BAZNAS)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -234,7 +265,7 @@ const badgeClass = (type: string) => ({
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <!-- Pie breakdown -->
             <div v-reveal-left>
-              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Distribusi per Sektor</p>
+              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Distribution by Sector' : 'Distribusi per Sektor' }}</p>
               <div class="h-48 md:h-56">
                 <Pie :data="zakatPieData" :options="pieOptions" />
               </div>
@@ -242,7 +273,7 @@ const badgeClass = (type: string) => ({
 
             <!-- Chart -->
             <div v-reveal-right>
-              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Tren Penerimaan (Triliun Rp)</p>
+              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Revenue Trend (Trillion Rp)' : 'Tren Penerimaan (Triliun Rp)' }}</p>
               <div class="h-48">
                 <Bar :data="zakatBarData" :options="baseOptions" />
               </div>
@@ -252,9 +283,9 @@ const badgeClass = (type: string) => ({
           <!-- Quote -->
           <blockquote class="border-l-2 border-[#eeba4b] pl-4 py-3 bg-gray-50 dark:bg-white/5 rounded-r-lg mt-8 ml-0" v-reveal>
             <p class="text-[13px] text-gray-600 dark:text-gray-300 leading-relaxed italic">
-              "Jurang antara potensi dan realisasi masih sangat lebar. Digitalisasi dan literasi menjadi kunci membuka 90% potensi yang belum tergarap."
+              {{ locale === 'en' ? '"The gap between potential and realization is still very wide. Digitalization and literacy are the keys to unlocking the 90% untapped potential."' : '"Jurang antara potensi dan realisasi masih sangat lebar. Digitalisasi dan literasi menjadi kunci membuka 90% potensi yang belum tergarap."' }}
             </p>
-            <cite class="text-[11px] text-gray-400 mt-2 block not-italic font-medium">— Sumber Data: BAZNAS (Badan Amil Zakat Nasional) & Riset CISF 2024</cite>
+            <cite class="text-[11px] text-gray-400 mt-2 block not-italic font-medium">— {{ locale === 'en' ? 'Data Source:' : 'Sumber Data:' }} BAZNAS (Badan Amil Zakat Nasional) & {{ locale === 'en' ? 'CISF Research' : 'Riset CISF' }} 2024</cite>
           </blockquote>
         </div>
       </section>
@@ -263,9 +294,9 @@ const badgeClass = (type: string) => ({
       <section id="wakaf" class="py-12 sm:py-16 border-b border-gray-100 dark:border-white/10">
         <div class="container mx-auto px-4 sm:px-6">
           <div v-reveal>
-            <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Wakaf & Infak</p>
-            <h2 class="text-xl sm:text-2xl font-medium">Aset Wakaf & Tren Infak Digital</h2>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Badan Wakaf Indonesia (BWI)</p>
+            <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ locale === 'en' ? 'Waqf & Infaq' : 'Wakaf & Infak' }}</p>
+            <h2 class="text-xl sm:text-2xl font-medium">{{ locale === 'en' ? 'Waqf Assets & Digital Infaq Trend' : 'Aset Wakaf & Tren Infak Digital' }}</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">{{ locale === 'en' ? 'Data Source:' : 'Sumber Data:' }} Badan Wakaf Indonesia (BWI)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -282,13 +313,13 @@ const badgeClass = (type: string) => ({
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <div v-reveal-left>
-              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Status Lahan Wakaf</p>
+              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Waqf Land Status' : 'Status Lahan Wakaf' }}</p>
               <div class="h-48 md:h-56">
                 <Pie :data="wakafPieData" :options="pieOptions" />
               </div>
             </div>
             <div v-reveal-right>
-              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Tren Wakaf Uang (Triliun Rp)</p>
+              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Cash Waqf Trend (Trillion Rp)' : 'Tren Wakaf Uang (Triliun Rp)' }}</p>
               <div class="h-48">
                 <Line :data="wakafLineData" :options="baseOptions" />
               </div>
@@ -302,8 +333,8 @@ const badgeClass = (type: string) => ({
         <div class="container mx-auto px-4 sm:px-6">
           <div v-reveal>
             <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Islamic Finance</p>
-            <h2 class="text-xl sm:text-2xl font-medium">Perbankan Syariah Indonesia</h2>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Otoritas Jasa Keuangan (OJK)</p>
+            <h2 class="text-xl sm:text-2xl font-medium">{{ locale === 'en' ? 'Indonesian Islamic Banking' : 'Perbankan Syariah Indonesia' }}</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">{{ locale === 'en' ? 'Data Source:' : 'Sumber Data:' }} Otoritas Jasa Keuangan (OJK)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -321,20 +352,20 @@ const badgeClass = (type: string) => ({
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <div v-reveal-left class="space-y-6">
               <div>
-                <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Distribusi Aset Perbankan</p>
+                <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Banking Assets Distribution' : 'Distribusi Aset Perbankan' }}</p>
                 <div class="h-40 md:h-48">
                   <Pie :data="financeAsetPieData" :options="pieOptions" />
                 </div>
               </div>
               <div>
-                <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Komposisi Pembiayaan</p>
+                <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Financing Composition' : 'Komposisi Pembiayaan' }}</p>
                 <div class="h-40 md:h-48">
                   <Pie :data="pembiayaanPieData" :options="pieOptions" />
                 </div>
               </div>
             </div>
             <div v-reveal-right>
-              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Tren Aset Bank Syariah (Triliun Rp)</p>
+              <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Islamic Bank Assets Trend (Trillion Rp)' : 'Tren Aset Bank Syariah (Triliun Rp)' }}</p>
               <div class="h-48">
                 <Line :data="financeLineData" :options="baseOptions" />
               </div>
@@ -347,9 +378,9 @@ const badgeClass = (type: string) => ({
       <section id="indeks" class="py-12 sm:py-16 border-b border-gray-100 dark:border-white/10">
         <div class="container mx-auto px-4 sm:px-6">
           <div v-reveal>
-            <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Indeks Umat</p>
-            <h2 class="text-xl sm:text-2xl font-medium">Kemiskinan & Literasi Keuangan</h2>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Sumber Data: Bank Indonesia (BI) & Badan Pusat Statistik (BPS)</p>
+            <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ locale === 'en' ? 'Ummah Index' : 'Indeks Umat' }}</p>
+            <h2 class="text-xl sm:text-2xl font-medium">{{ locale === 'en' ? 'Poverty & Financial Literacy' : 'Kemiskinan & Literasi Keuangan' }}</h2>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">{{ locale === 'en' ? 'Data Source:' : 'Sumber Data:' }} Bank Indonesia (BI) & Badan Pusat Statistik (BPS)</p>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
 
@@ -365,7 +396,7 @@ const badgeClass = (type: string) => ({
           </div>
 
           <div v-reveal class="max-w-lg">
-            <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">Perbandingan Literasi (%)</p>
+            <p class="text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-4">{{ locale === 'en' ? 'Literacy Comparison (%)' : 'Perbandingan Literasi (%)' }}</p>
             <div class="h-40 md:h-48">
               <Pie :data="indeksPieData" :options="pieOptions" />
             </div>
@@ -373,9 +404,9 @@ const badgeClass = (type: string) => ({
 
           <blockquote class="border-l-2 border-[#eeba4b] pl-4 py-3 bg-gray-50 dark:bg-white/5 rounded-r-lg mt-8" v-reveal>
             <p class="text-[13px] text-gray-600 dark:text-gray-300 leading-relaxed italic">
-              "Literasi adalah benteng pertahanan ekonomi umat yang paling rapuh saat ini."
+              {{ locale === 'en' ? '"Literacy is the most fragile economic defense of the ummah today."' : '"Literasi adalah benteng pertahanan ekonomi umat yang paling rapuh saat ini."' }}
             </p>
-            <cite class="text-[11px] text-gray-400 mt-2 block not-italic font-medium">— Sumber Data: BPS & Survei Literasi Keuangan OJK 2024</cite>
+            <cite class="text-[11px] text-gray-400 mt-2 block not-italic font-medium">— {{ locale === 'en' ? 'Data Source:' : 'Sumber Data:' }} BPS & Survei Literasi Keuangan OJK 2024</cite>
           </blockquote>
         </div>
       </section>
@@ -385,12 +416,12 @@ const badgeClass = (type: string) => ({
         <div class="container mx-auto px-4 sm:px-6">
           <div class="flex justify-between items-end mb-7" v-reveal>
             <div>
-              <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Artikel</p>
-              <h2 class="text-xl sm:text-2xl font-medium">Artikel Terkait</h2>
+              <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ $t('article.label') }}</p>
+              <h2 class="text-xl sm:text-2xl font-medium">{{ locale === 'en' ? 'Related Articles' : 'Artikel Terkait' }}</h2>
               <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3"></div>
             </div>
             <NuxtLink to="/article" class="text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-1.5 group">
-              Semua
+              {{ $t('article.allMobile') }}
               <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
                 <path d="M3 8h10M9 4l4 4-4 4"/>
               </svg>

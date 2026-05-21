@@ -1,34 +1,36 @@
 <script setup lang="ts">
-const activities = [
+const { t } = useI18n()
+
+const activities = computed(() => [
   {
-    title: 'Penelitian',
+    title: t('activity.items[0].title'),
     icon: `<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>`,
-    desc: 'Berbagai penelitian kebijakan ekonomi dan keuangan, baik dalam bentuk kerjasama dengan lembaga lain maupun penelitian mandiri.',
+    desc: t('activity.items[0].desc'),
   },
   {
-    title: 'Wacana Publik',
+    title: t('activity.items[1].title'),
     icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
-    desc: 'Aktif terlibat dalam diskursus kebijakan publik di berbagai media massa melalui artikel, opini/wawancara, talkshow, press conference, social media dan berbagai sarana komunikasi lainnya.',
+    desc: t('activity.items[1].desc'),
   },
   {
-    title: 'Publikasi',
+    title: t('activity.items[2].title'),
     icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="11" y2="17"/>`,
-    desc: 'Hasil-hasil analisis kebijakan dalam berbagai format dan beragam kegiatan dengan harapan dapat memberi pencerahan kepada masyarakat secara luas.',
+    desc: t('activity.items[2].desc'),
   },
   {
-    title: 'Pelatihan',
+    title: t('activity.items[3].title'),
     icon: `<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>`,
-    desc: 'Menyelenggarakan berbagai bentuk pelatihan analisis kebijakan publik, baik untuk mahasiswa, Lembaga Swadaya Masyarakat, wartawan media massa, dan umum.',
+    desc: t('activity.items[3].desc'),
   },
-]
+])
 </script>
 
 <template>
   <section class="py-14 sm:py-16 lg:py-20 bg-white dark:bg-[#111]">
     <div class="container mx-auto px-4 sm:px-6">
       <div class="text-center" v-reveal>
-        <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Activity</p>
-        <h2 class="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">Aktivitas</h2>
+        <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ t('activity.label') }}</p>
+        <h2 class="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">{{ t('activity.title') }}</h2>
         <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-6 sm:mb-7 mx-auto"></div>
       </div>
 

@@ -5,7 +5,17 @@ export default defineNuxtConfig({
   srcDir: 'app/',
   serverDir: 'server/',
   compatibilityDate: '2025-07-15',
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss'],
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
+  i18n: {
+    locales: [
+      { code: 'en', file: 'en.json', name: 'English' },
+      { code: 'id', file: 'id.json', name: 'Indonesia' }
+    ],
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    lazy: true,
+    langDir: '../app/locales/'
+  },
   tailwindcss: {
     cssPath: ['./public/assets/css/style.css', { injectPosition: "first" }],
   },

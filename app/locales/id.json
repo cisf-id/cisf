@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "resources": "Sumber Daya",
+    "research": "Penelitian",
+    "publication": "Publikasi",
+    "article": "Artikel",
+    "webinarSeries": "Seri Webinar",
+    "aboutUs": "Tentang Kami",
+    "statistics": "Statistik",
+    "searchPlaceholder": "Cari publikasi..."
+  },
+  "footer": {
+    "office": "Kantor",
+    "contact": "Kontak",
+    "navigation": "Navigasi",
+    "resources": "Sumber Daya",
+    "copyright": "CISF — Center of Islamic Social Finance."
+  },
+  "heroSlider": {
+    "slides": [
+      {
+        "title": "Center of Islamic Social Finance",
+        "sub": "Memajukan dampak sosial melalui penelitian, pendampingan, dan proyek berbasis komunitas."
+      },
+      {
+        "title": "Penelitian & Dampak",
+        "sub": "30+ studi inovatif tentang Wakaf, Zakat, dan Ekosistem Halal yang dipublikasikan secara global."
+      },
+      {
+        "title": "Pemberdayaan Masyarakat",
+        "sub": "Mendorong pemerataan ekonomi melalui pendampingan UMKM, sertifikasi halal, dan pelatihan keuangan."
+      }
+    ]
+  },
+  "activity": {
+    "label": "Aktivitas",
+    "title": "Aktivitas",
+    "items": [
+      {
+        "title": "Penelitian",
+        "desc": "Berbagai penelitian kebijakan ekonomi dan keuangan, baik dalam bentuk kerjasama dengan lembaga lain maupun penelitian mandiri."
+      },
+      {
+        "title": "Wacana Publik",
+        "desc": "Aktif terlibat dalam diskursus kebijakan publik di berbagai media massa melalui artikel, opini/wawancara, talkshow, press conference, social media dan berbagai sarana komunikasi lainnya."
+      },
+      {
+        "title": "Publikasi",
+        "desc": "Hasil-hasil analisis kebijakan dalam berbagai format dan beragam kegiatan dengan harapan dapat memberi pencerahan kepada masyarakat secara luas."
+      },
+      {
+        "title": "Pelatihan",
+        "desc": "Menyelenggarakan berbagai bentuk pelatihan analisis kebijakan publik, baik untuk mahasiswa, Lembaga Swadaya Masyarakat, wartawan media massa, dan umum."
+      }
+    ]
+  },
+  "research": {
+    "label": "Penelitian",
+    "title": "Penelitian terbaru",
+    "all": "Semua penelitian",
+    "allMobile": "Semua",
+    "abstractNotAvailable": "Abstrak tidak tersedia.",
+    "readMore": "Baca selengkapnya",
+    "titleMain": "Penelitian",
+    "found": "penelitian ditemukan",
+    "notFound": "Tidak ada penelitian yang sesuai dengan filter.",
+    "viewRes": "Lihat penelitian"
+  },
+  "publication": {
+    "label": "Publikasi",
+    "title": "Publikasi terbaru",
+    "all": "Semua publikasi",
+    "allMobile": "Semua",
+    "readMore": "Baca publikasi",
+    "titleMain": "Publikasi",
+    "found": "publikasi ditemukan",
+    "notFound": "Tidak ada publikasi yang sesuai dengan filter.",
+    "viewPub": "Lihat publikasi"
+  },
+  "article": {
+    "label": "Artikel",
+    "title": "Artikel terbaru",
+    "all": "Semua artikel",
+    "allMobile": "Semua",
+    "readMore": "Baca selengkapnya"
+  },
+  "youtube": {
+    "label": "Webinar",
+    "title": "Seri Webinar",
+    "all": "Semua webinar",
+    "allMobile": "Semua"
+  },
+  "medsos": {
+    "label": "Media Sosial",
+    "title": "Instagram",
+    "follow": "Ikuti Instagram kami"
+  },
+  "page": {
+    "statistics": "Statistik",
+    "searchTitle": "Hasil Pencarian untuk",
+    "noResults": "Tidak ada hasil untuk",
+    "backToHome": "Kembali ke Beranda",
+    "by": "oleh"
+  },
+  "filter": {
+    "reset": "Reset",
+    "apply": "Terapkan Filter",
+    "keywordPlaceholder": "Judul, topik, kata kunci...",
+    "all": "Semua",
+    "allYears": "Semua Tahun"
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya"
+  },
+  "status": {
+    "searching": "Mencari...",
+    "errorLoading": "Gagal memuat data. Silakan coba lagi."
+  },
+  "seo": {
+    "title": "CISF — Center of Islamic Social Finance",
+    "description": "Center of Islamic Social Finance (CISF) adalah jaringan kolaboratif para peneliti yang berdedikasi untuk memajukan bidang keuangan sosial Islam dan mengeksplorasi potensinya untuk menciptakan dampak sosial yang positif. Pusat ini berfokus pada melakukan penelitian, mengumpulkan data yang relevan, mengimplementasikan proyek-proyek berbasis komunitas, dan menyediakan program pendampingan dan pelatihan yang berkaitan dengan keuangan sosial Islam. Dengan memberdayakan individu dan organisasi, CISF berkontribusi tidak hanya pada pengetahuan akademis tetapi juga pada solusi dunia nyata yang mengatasi tantangan sosial dan ekonomi yang mendesak."
+  }
+}

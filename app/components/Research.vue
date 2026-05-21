@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const { data: researchData, pending } = useFetch("/api/research/top5Research")
+const { locale } = useI18n()
 
 function extractAbstract(content: string | undefined): string {
   if (!content) return ''
@@ -18,11 +19,11 @@ const researchs = computed(() => {
 
   return (researchData.value as any).items.map((post: any) => ({
     id: post.id,
-    title: post.title,
+    title: parseLocaleText(post.title, locale.value),
     author: post.author.displayName,
-    date: new Date(post.published).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+    date: new Date(post.published).toLocaleDateString(locale.value === 'en' ? 'en-US' : 'id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
     year: new Date(post.published).getFullYear().toString(),
-    abstract: extractAbstract(post.content),
+    abstract: parseLocaleText(extractAbstract(post.content), locale.value),
     labels: post.labels ?? [],
     url: `/research${new URL(post.url).pathname}`
   }))
@@ -41,16 +42,16 @@ const toggle = (i: number) => {
       <!-- Section header -->
       <div class="flex justify-between items-end" v-reveal>
         <div>
-          <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Research</p>
-          <h2 class="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">Penelitian terbaru</h2>
+          <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ $t('research.label') }}</p>
+          <h2 class="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">{{ $t('research.title') }}</h2>
           <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-6 sm:mb-7"></div>
         </div>
         <NuxtLink
           to="/research"
           class="text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-6 sm:mb-7 flex items-center gap-1.5 group shrink-0 ml-4"
         >
-          <span class="hidden sm:inline">Semua penelitian</span>
-          <span class="sm:hidden text-[10px]">Semua</span>
+          <span class="hidden sm:inline">{{ $t('research.all') }}</span>
+          <span class="sm:hidden text-[10px]">{{ $t('research.allMobile') }}</span>
           <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
             <path d="M3 8h10M9 4l4 4-4 4"/>
           </svg>
@@ -142,14 +143,14 @@ const toggle = (i: number) => {
             >
               <div class="pb-4 pl-8">
                 <p class="text-[12.5px] text-gray-500 dark:text-gray-400 leading-relaxed break-words">
-                  {{ research.abstract || 'Abstrak tidak tersedia.' }}
+                  {{ research.abstract || $t('research.abstractNotAvailable') }}
                 </p>
                 <NuxtLink
                   :to="research.url"
                   class="inline-flex items-center gap-1 mt-3 text-[12px] text-blue-600 dark:text-blue-400 hover:underline underline-offset-2 transition-colors"
                   @click.stop
                 >
-                  Baca selengkapnya
+                  {{ $t('research.readMore') }}
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4"/>
                   </svg>

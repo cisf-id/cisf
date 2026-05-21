@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "home": "Home",
+    "resources": "Resources",
+    "research": "Research",
+    "publication": "Publication",
+    "article": "Article",
+    "webinarSeries": "Webinar Series",
+    "aboutUs": "About Us",
+    "statistics": "Statistics",
+    "searchPlaceholder": "Search publication..."
+  },
+  "footer": {
+    "office": "Office",
+    "contact": "Contact",
+    "navigation": "Navigation",
+    "resources": "Resources",
+    "copyright": "CISF — Center of Islamic Social Finance."
+  },
+  "heroSlider": {
+    "slides": [
+      {
+        "title": "Center of Islamic Social Finance",
+        "sub": "Advancing social impact through research, mentoring, and community-driven projects."
+      },
+      {
+        "title": "Research & Impact",
+        "sub": "30+ groundbreaking studies on Waqf, Zakat, and the Halal Ecosystem published globally."
+      },
+      {
+        "title": "Community Empowerment",
+        "sub": "Driving economic equity through MSME mentoring, halal certification, and financial training."
+      }
+    ]
+  },
+  "activity": {
+    "label": "Activity",
+    "title": "Activities",
+    "items": [
+      {
+        "title": "Research",
+        "desc": "Various economic and financial policy research, both in collaboration with other institutions and independent research."
+      },
+      {
+        "title": "Public Discourse",
+        "desc": "Actively involved in public policy discourse in various mass media through articles, opinion/interviews, talk shows, press conferences, social media and various other communication means."
+      },
+      {
+        "title": "Publication",
+        "desc": "Results of policy analysis in various formats and various activities with the hope of providing enlightenment to the wider community."
+      },
+      {
+        "title": "Training",
+        "desc": "Organizing various forms of public policy analysis training, for students, Non-Governmental Organizations, mass media journalists, and the general public."
+      }
+    ]
+  },
+  "research": {
+    "label": "Research",
+    "title": "Latest Research",
+    "all": "All research",
+    "allMobile": "All",
+    "abstractNotAvailable": "Abstract not available.",
+    "readMore": "Read more",
+    "titleMain": "Research",
+    "found": "research found",
+    "notFound": "No research match the filter.",
+    "viewRes": "View research"
+  },
+  "publication": {
+    "label": "Publication",
+    "title": "Latest Publications",
+    "all": "All publications",
+    "allMobile": "All",
+    "readMore": "Read publication",
+    "titleMain": "Publications",
+    "found": "publications found",
+    "notFound": "No publications match the filter.",
+    "viewPub": "View publication"
+  },
+  "article": {
+    "label": "Article",
+    "title": "Latest Articles",
+    "all": "All articles",
+    "allMobile": "All",
+    "readMore": "Read more"
+  },
+  "youtube": {
+    "label": "Webinar",
+    "title": "Webinar Series",
+    "all": "All webinars",
+    "allMobile": "All"
+  },
+  "medsos": {
+    "label": "Social Media",
+    "title": "Instagram",
+    "follow": "Follow our Instagram"
+  },
+  "page": {
+    "statistics": "Statistics",
+    "searchTitle": "Search Results for",
+    "noResults": "No results found for",
+    "backToHome": "Back to Home",
+    "by": "by"
+  },
+  "filter": {
+    "reset": "Reset",
+    "apply": "Apply Filter",
+    "keywordPlaceholder": "Title, topic, keyword...",
+    "all": "All",
+    "allYears": "All Years"
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "status": {
+    "searching": "Searching...",
+    "errorLoading": "Failed to load data. Please try again."
+  },
+  "seo": {
+    "title": "CISF — Center of Islamic Social Finance",
+    "description": "Center of Islamic Social Finance (CISF) is a collaborative network of researchers dedicated to advancing the field of Islamic social finance and exploring its potential to create positive social impact. The center focuses on conducting research, gathering relevant data, implementing community-based projects, and providing mentoring and training programs related to Islamic social finance. By empowering individuals and organizations, CISF contributes not only to academic knowledge but also to real-world solutions addressing pressing social and economic challenges."
+  }
+}

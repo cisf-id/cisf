@@ -6,6 +6,7 @@ const { data: articleData, pending } = await useFetch("/api/article/top5Articles
   lazy: true,
   server: false
 })
+const { locale } = useI18n()
 
 onMounted(async () => {
   loadingStore.start()
@@ -33,7 +34,7 @@ const articles = computed(() => {
   if (!articleData.value || typeof articleData.value !== 'object' || !('items' in articleData.value) || !Array.isArray((articleData.value as any).items)) return []
   return (articleData.value as any).items.map((post: any) => ({
     id: post.id,
-    title: post.title,
+    title: parseLocaleText(post.title, locale.value),
     author: post.author.displayName,
     date: post.published,
     image: extractImage(post.content),
@@ -65,8 +66,8 @@ const sidePosts = computed(() => {
     <div class="container mx-auto sm:px-4">
 
       <div v-reveal>
-        <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Article</p>
-        <h2 class="text-xl sm:text-2xl font-medium">Artikel terbaru</h2>
+        <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ $t('article.label') }}</p>
+        <h2 class="text-xl sm:text-2xl font-medium">{{ $t('article.title') }}</h2>
         <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-6 sm:mb-7"></div>
       </div>
 
@@ -91,7 +92,7 @@ const sidePosts = computed(() => {
               :to="featuredPost.url"
               class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white mt-4 transition-colors group"
             >
-              Baca selengkapnya
+              {{ $t('article.readMore') }}
               <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
                 <path d="M3 8h10M9 4l4 4-4 4"/>
               </svg>

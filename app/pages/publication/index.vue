@@ -2,9 +2,11 @@
 const loadingStore = useLoadingStore()
 const route = useRoute()
 
+const { t } = useI18n()
+
 useSeoMeta({
-  title: 'Publication — CISF',
-  description: 'Kumpulan Publikasi/Paper hasil dari penelitian CISF'
+  title: () => `${t('publication.label')} — CISF`,
+  description: () => t('publication.titleMain')
 })
 
 interface PublicationPost {
@@ -162,12 +164,12 @@ function extractAbstract(content: string | undefined): string {
 const publications = computed(() => {
   if (!publicationData.value?.items) return []
   return publicationData.value.items.map((post) => ({
-    title: post.title,
+    title: parseLocaleText(post.title, locale.value),
     author: post.author.displayName,
-    abstract: extractAbstract(post.content),
+    abstract: parseLocaleText(extractAbstract(post.content), locale.value),
     url: `/publication${new URL(post.url).pathname}`,
     year: new Date(post.published).getFullYear(),
-    date: new Date(post.published).toLocaleDateString('id-ID', {
+    date: new Date(post.published).toLocaleDateString(locale.value === 'en' ? 'en-US' : 'id-ID', {
       day: 'numeric', month: 'long', year: 'numeric'
     }),
     labels: post.labels ?? [],
@@ -190,8 +192,8 @@ const changePage = async (i: number) => {
     <!-- Page Header -->
     <div class="border-b border-gray-200 bg-white">
       <div class="container mx-auto px-6 pt-36 pb-8">
-        <p class="text-[10px] tracking-[0.2em] uppercase text-gray-400 mb-2" v-reveal-right>Publication</p>
-        <h1 class="text-3xl sm:text-4xl font-normal text-gray-900" v-reveal-left>Publikasi</h1>
+        <p class="text-[10px] tracking-[0.2em] uppercase text-gray-400 mb-2" v-reveal-right>{{ $t('publication.label') }}</p>
+        <h1 class="text-3xl sm:text-4xl font-normal text-gray-900" v-reveal-left>{{ $t('publication.titleMain') }}</h1>
         <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3" v-reveal-right></div>
       </div>
     </div>
@@ -206,7 +208,7 @@ const changePage = async (i: number) => {
               <button
                 @click="resetFilter"
                 class="text-[10px] tracking-wider uppercase text-gray-400 hover:text-gray-700 transition-colors"
-              >Reset</button>
+              >{{ $t('filter.reset') }}</button>
             </div>
 
             <div class="p-4 space-y-5">
@@ -217,7 +219,7 @@ const changePage = async (i: number) => {
                 <input
                   v-model="filters.keyword"
                   type="text"
-                  placeholder="Judul, topik, kata kunci..."
+                  :placeholder="$t('filter.keywordPlaceholder')"
                   class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors"
                   @keyup.enter="applyFilter"
                 />
@@ -227,7 +229,7 @@ const changePage = async (i: number) => {
               <div>
                 <label class="block text-[10px] tracking-widest uppercase text-gray-400 mb-1.5">Author</label>
                 <select v-model="filters.author" class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer">
-                  <option value="">Semua</option>
+                  <option value="">{{ $t('filter.all') }}</option>
                   <option v-for="a in authors" :key="a" :value="a">{{ a }}</option>
                 </select>
               </div>
@@ -236,7 +238,7 @@ const changePage = async (i: number) => {
               <div>
                 <label class="block text-[10px] tracking-widest uppercase text-gray-400 mb-1.5">Year</label>
                 <select v-model="filters.year" class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer">
-                  <option value="">Semua Tahun</option>
+                  <option value="">{{ $t('filter.allYears') }}</option>
                   <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
                 </select>
               </div>
@@ -245,7 +247,7 @@ const changePage = async (i: number) => {
               <div>
                 <label class="block text-[10px] tracking-widest uppercase text-gray-400 mb-1.5">Expertise</label>
                 <select v-model="filters.expertise" class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer">
-                  <option value="">Semua</option>
+                  <option value="">{{ $t('filter.all') }}</option>
                   <option v-for="e in expertises" :key="e" :value="e">{{ e }}</option>
                 </select>
               </div>
@@ -254,7 +256,7 @@ const changePage = async (i: number) => {
               <div>
                 <label class="block text-[10px] tracking-widest uppercase text-gray-400 mb-1.5">Topic</label>
                 <select v-model="filters.topic" class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer">
-                  <option value="">Semua</option>
+                  <option value="">{{ $t('filter.all') }}</option>
                   <option v-for="t in topics" :key="t" :value="t">{{ t }}</option>
                 </select>
               </div>
@@ -263,7 +265,7 @@ const changePage = async (i: number) => {
               <div>
                 <label class="block text-[10px] tracking-widest uppercase text-gray-400 mb-1.5">Research Area</label>
                 <select v-model="filters.area" class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer">
-                  <option value="">Semua</option>
+                  <option value="">{{ $t('filter.all') }}</option>
                   <option v-for="a in areas" :key="a" :value="a">{{ a }}</option>
                 </select>
               </div>
@@ -272,7 +274,7 @@ const changePage = async (i: number) => {
               <div>
                 <label class="block text-[10px] tracking-widest uppercase text-gray-400 mb-1.5">Type</label>
                 <select v-model="filters.type" class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded text-gray-900 focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer">
-                  <option value="">Semua</option>
+                  <option value="">{{ $t('filter.all') }}</option>
                   <option v-for="t in types" :key="t" :value="t">{{ t }}</option>
                 </select>
               </div>
@@ -282,7 +284,7 @@ const changePage = async (i: number) => {
                 @click="applyFilter"
                 class="w-full py-2.5 text-xs font-semibold tracking-widest uppercase bg-gray-900 text-white rounded hover:bg-gray-700 transition-colors"
               >
-                Terapkan Filter
+                {{ $t('filter.apply') }}
               </button>
             </div>
           </div>
@@ -294,9 +296,9 @@ const changePage = async (i: number) => {
           <div v-if="query != ''" class="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
             <p class="text-sm text-gray-500">
               <span v-if="!pending">
-                <strong class="text-gray-900 font-semibold">{{ publications.length }}</strong> publikasi ditemukan
+                <strong class="text-gray-900 font-semibold">{{ publications.length }}</strong> {{ $t('publication.found') }}
               </span>
-              <span v-else class="animate-pulse">Mencari…</span>
+              <span v-else class="animate-pulse">{{ $t('status.searching') }}</span>
             </p>
           </div>
 
@@ -312,14 +314,14 @@ const changePage = async (i: number) => {
 
           <!-- Error -->
           <div v-else-if="error" class="text-center py-20 text-red-400 text-sm">
-            Gagal memuat publikasi. Silakan coba lagi.
+            {{ $t('status.errorLoading') }}
           </div>
 
           <!-- Empty -->
           <div v-else-if="!publications.length" class="bg-white border border-gray-200 rounded-lg py-20 text-center">
-            <p class="text-gray-400 text-sm mb-3">Tidak ada publikasi yang sesuai dengan filter.</p>
+            <p class="text-gray-400 text-sm mb-3">{{ $t('publication.notFound') }}</p>
             <button @click="resetFilter" class="text-xs underline text-gray-400 hover:text-gray-900 transition-colors">
-              Reset filter
+              {{ $t('filter.reset') }}
             </button>
           </div>
 
@@ -365,7 +367,7 @@ const changePage = async (i: number) => {
 
               <!-- Read more cue -->
               <div class="mt-2.5 flex items-center gap-1 text-[11px] text-blue-500 group-hover:text-blue-700 transition-colors">
-                <span>Lihat publikasi</span>
+                <span>{{ $t('publication.viewPub') }}</span>
                 <svg class="w-3 h-3 translate-x-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                 </svg>
@@ -386,7 +388,7 @@ const changePage = async (i: number) => {
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
                 <path d="M10 4l-4 4 4 4"/>
               </svg>
-              Sebelumnya
+              {{ $t('pagination.prev') }}
             </button>
 
             <!-- Nomor halaman -->
@@ -415,7 +417,7 @@ const changePage = async (i: number) => {
               :disabled="!hasNext"
               class="flex items-center gap-2 px-5 py-2.5 text-xs font-medium tracking-widest uppercase border border-gray-200 dark:border-white/20 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-gray-600 dark:text-gray-400"
             >
-              Berikutnya
+              {{ $t('pagination.next') }}
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
                 <path d="M6 4l4 4-4 4"/>
               </svg>

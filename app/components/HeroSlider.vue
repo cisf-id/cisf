@@ -1,22 +1,24 @@
 <script setup>
+const { t } = useI18n()
+
 // Data Slide (State)
-const slides = [
+const slides = computed(() => [
   { 
-    title: "Center of Islamic Social Finance", 
-    sub: "Advancing social impact through research, mentoring, and community-driven projects.",
+    title: t('heroSlider.slides[0].title'), 
+    sub: t('heroSlider.slides[0].sub'),
     image: "/assets/img/slide1.jpg"
   },
   { 
-    title: "Research & Impact", 
-    sub: "30+ groundbreaking studies on Waqf, Zakat, and the Halal Ecosystem published globally.",
+    title: t('heroSlider.slides[1].title'), 
+    sub: t('heroSlider.slides[1].sub'),
     image: "/assets/img/slide2.jpg"
   },
   { 
-    title: "Community Empowerment", 
-    sub: "Driving economic equity through MSME mentoring, halal certification, and financial training.",
+    title: t('heroSlider.slides[2].title'), 
+    sub: t('heroSlider.slides[2].sub'),
     image: "/assets/img/slide3.jpg"
   },
-];
+]);
 
 const current = ref(0);
 const progressActive = ref(true);
@@ -24,12 +26,12 @@ let timer = null;
 
 // Logika Navigasi
 const nextSlide = () => {
-  current.value = (current.value + 1) % slides.length;
+  current.value = (current.value + 1) % slides.value.length;
   resetProgress();
 };
 
 const prevSlide = () => {
-  current.value = (current.value - 1 + slides.length) % slides.length;
+  current.value = (current.value - 1 + slides.value.length) % slides.value.length;
   resetProgress();
 };
 

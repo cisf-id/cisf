@@ -1,16 +1,18 @@
 <script setup lang="ts">
-const footerNavMain = [
-  { label: 'Home', to: '/' },
-  { label: 'About Us', to: '/2025/05/what-is-cisf.html' },
-  { label: 'Statistics', to: '/statistic' },
-]
+const { t } = useI18n()
 
-const footerNavResources = [
-  { label: 'Research', to: '/research' },
-  { label: 'Publication', to: '/publication' },
-  { label: 'Article', to: '/article' },
-  { label: 'Webinar Series', to: '/webinar-series' },
-]
+const footerNavMain = computed(() => [
+  { label: t('nav.home'), to: '/' },
+  { label: t('nav.aboutUs'), to: '/2025/05/what-is-cisf.html' },
+  { label: t('nav.statistics'), to: '/statistic' },
+])
+
+const footerNavResources = computed(() => [
+  { label: t('nav.research'), to: '/research' },
+  { label: t('nav.publication'), to: '/publication' },
+  { label: t('nav.article'), to: '/article' },
+  { label: t('nav.webinarSeries'), to: '/webinar-series' },
+])
 
 const socials = [
   {
@@ -55,7 +57,7 @@ const socials = [
           <div class="space-y-4 text-[12px] text-white/50">
             <!-- Kantor -->
             <div>
-              <p class="text-[10px] tracking-widest uppercase text-white/30 mb-2">Kantor</p>
+              <p class="text-[10px] tracking-widest uppercase text-white/30 mb-2">{{ t('footer.office') }}</p>
               <NuxtLink to="https://maps.app.goo.gl/g2SQQfDuyKXGj4sz8" target="_blank" class="hover:text-white transition-colors">
                 <p class="leading-relaxed">
                     Semolowaru Elok Blok N-15, Semolowaru,<br>
@@ -67,7 +69,7 @@ const socials = [
 
             <!-- Kontak -->
             <div class="space-y-2">
-              <p class="text-[10px] tracking-widest uppercase text-white/30 mb-2">Kontak</p>
+              <p class="text-[10px] tracking-widest uppercase text-white/30 mb-2">{{ t('footer.contact') }}</p>
               <a href="tel:+6231xxxxxxx" class="flex items-center gap-2 hover:text-white transition-colors">
                 <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
@@ -86,7 +88,7 @@ const socials = [
 
         <!-- Col 2: Navigasi -->
         <div>
-          <p class="text-[10px] tracking-widest uppercase text-white/30 mb-5">Navigasi</p>
+          <p class="text-[10px] tracking-widest uppercase text-white/30 mb-5">{{ t('footer.navigation') }}</p>
           <ul class="space-y-3">
             <li v-for="link in footerNavMain" :key="link.to">
               <NuxtLink
@@ -101,7 +103,7 @@ const socials = [
 
         <!-- Col 3: Resources -->
         <div>
-          <p class="text-[10px] tracking-widest uppercase text-white/30 mb-5">Resources</p>
+          <p class="text-[10px] tracking-widest uppercase text-white/30 mb-5">{{ t('footer.resources') }}</p>
           <ul class="space-y-3">
             <li v-for="link in footerNavResources" :key="link.to">
               <NuxtLink

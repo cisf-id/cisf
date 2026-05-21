@@ -8,6 +8,11 @@ const searchQuery = ref('')
 const searchOpen = ref(false)
 const searchInput = ref<HTMLInputElement | null>(null)
 const currentPath = computed(() => route.path)
+const { t, locale, setLocale } = useI18n()
+
+const toggleLanguage = () => {
+  setLocale(locale.value === 'en' ? 'id' : 'en')
+}
 
 const isActive = (link: any) => {
   if (link.to === currentPath.value) return true
@@ -55,27 +60,27 @@ const submitSearch = () => {
   menuOpen.value = false
 }
 
-const navLinks = [
-  { label: 'Home', to: '/' },
-  { label: 'Resources', to: '', dropdown: [
-    { label: 'Research', to: '/research' },
-    { label: 'Publication', to: '/publication' },
-    { label: 'Article', to: '/article' },
-    { label: 'Webinar Series', to: '/webinar-series' },
+const navLinks = computed(() => [
+  { label: t('nav.home'), to: '/' },
+  { label: t('nav.resources'), to: '', dropdown: [
+    { label: t('nav.research'), to: '/research' },
+    { label: t('nav.publication'), to: '/publication' },
+    { label: t('nav.article'), to: '/article' },
+    { label: t('nav.webinarSeries'), to: '/webinar-series' },
   ]},
-  { label: 'About Us', to: '/2025/05/what-is-cisf.html' },
-  { label: 'Statistics', to: '/statistic' },
-]
+  { label: t('nav.aboutUs'), to: '/2025/05/what-is-cisf.html' },
+  { label: t('nav.statistics'), to: '/statistic' },
+])
 
-const navLinkMobiles = [
-  { label: 'Home', to: '/' },
-  { label: 'Research', to: '/research' },
-  { label: 'Publication', to: '/publication' },
-  { label: 'Article', to: '/article' },
-  { label: 'Webinar Series', to: '/webinar-series' },
-  { label: 'About Us', to: '/2025/05/what-is-cisf.html' },
-  { label: 'Statistics', to: '/statistic' },
-]
+const navLinkMobiles = computed(() => [
+  { label: t('nav.home'), to: '/' },
+  { label: t('nav.research'), to: '/research' },
+  { label: t('nav.publication'), to: '/publication' },
+  { label: t('nav.article'), to: '/article' },
+  { label: t('nav.webinarSeries'), to: '/webinar-series' },
+  { label: t('nav.aboutUs'), to: '/2025/05/what-is-cisf.html' },
+  { label: t('nav.statistics'), to: '/statistic' },
+])
 
 const navBg = computed(() => {
   if (isScrolled.value || !isHomePage.value || menuOpen.value) {
@@ -184,7 +189,7 @@ const socials = [
             ref="searchInput"
             v-model="searchQuery"
             type="text"
-            placeholder="Cari publikasi..."
+            :placeholder="t('nav.searchPlaceholder')"
             class="bg-white/10 border border-white/20 text-white placeholder-white/40 text-xs px-3 py-[9px] rounded-l-full focus:outline-none focus:border-white/40 w-44 xl:w-56"
             @keyup.enter="submitSearch"
           />
@@ -199,6 +204,16 @@ const socials = [
             </svg>
           </button>
         </div>
+
+        <!-- Language Switcher Desktop -->
+        <button
+          @click="toggleLanguage"
+          class="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-colors duration-200"
+        >
+          <span :class="['text-xs font-bold transition-colors duration-200', locale === 'en' ? 'text-[#eeba4b]' : 'text-white/60']">EN</span>
+          <span class="text-white/30 text-xs">/</span>
+          <span :class="['text-xs font-bold transition-colors duration-200', locale === 'id' ? 'text-[#eeba4b]' : 'text-white/60']">ID</span>
+        </button>
       </div>
 
       <!-- Hamburger -->
@@ -229,7 +244,7 @@ const socials = [
             <input
               v-model="searchQuery"
               type="text"
-              placeholder="Cari publikasi..."
+              :placeholder="t('nav.searchPlaceholder')"
               class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm px-4 py-2.5 rounded-full focus:outline-none focus:border-white/40"
               @keyup.enter="submitSearch"
             />
@@ -251,6 +266,19 @@ const socials = [
           >
             {{ link.label }}
           </NuxtLink>
+
+          <!-- Language Switcher Mobile -->
+          <div class="py-3.5 border-b border-white/10 flex justify-between items-center">
+            <span class="text-white/80 text-sm font-medium tracking-[2px] uppercase">Language</span>
+            <button
+              @click="toggleLanguage"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-white/5"
+            >
+              <span :class="['text-xs font-bold', locale === 'en' ? 'text-[#eeba4b]' : 'text-white/60']">EN</span>
+              <span class="text-white/30 text-xs">/</span>
+              <span :class="['text-xs font-bold', locale === 'id' ? 'text-[#eeba4b]' : 'text-white/60']">ID</span>
+            </button>
+          </div>
 
           <!-- Sosmed -->
           <div class="flex justify-between items-center gap-3 py-3.5 border-b border-white/10 last:border-0 transition-colors duration-200">

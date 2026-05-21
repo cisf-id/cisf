@@ -17,12 +17,12 @@ const videos = [
       <div class="container mx-auto sm:px-4">
         <div class="flex justify-between items-end" v-reveal>
           <div>
-            <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">Video</p>
-            <h2 class="text-2xl font-medium">Kanal YouTube</h2>
+            <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ $t('youtube.label') }}</p>
+            <h2 class="text-2xl font-medium">{{ $t('youtube.title') }}</h2>
             <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-7"></div>
           </div>
           <a href="https://www.youtube.com/@CenterofIslamicSocialFinance" target="_blank" class="text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-7 flex items-center gap-1.5 group">
-            Tonton semua
+            {{ $t('youtube.all') }}
             <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
               <path d="M3 8h10M9 4l4 4-4 4"/>
             </svg>
