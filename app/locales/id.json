@@ -7,8 +7,38 @@
     "article": "Artikel",
     "webinarSeries": "Seri Webinar",
     "aboutUs": "Tentang Kami",
+    "visionMission": "Visi & Misi",
     "statistics": "Statistik",
     "searchPlaceholder": "Cari publikasi..."
+  },
+  "vision": {
+    "breadcrumb": "Tentang CISF",
+    "pageTitle": "Visi & Misi",
+    "visionLabel": "Visi",
+    "missionLabel": "Misi",
+    "visionText": "Menjadi pusat unggulan penelitian, inovasi, dan inisiatif berbasis komunitas di bidang keuangan sosial Islam, mendorong inklusi keuangan, pembangunan berkelanjutan, dan keadilan sosial melalui penerapan prinsip-prinsip keuangan Islam untuk kemaslahatan masyarakat.",
+    "missionItems": [
+      {
+        "title": "Melaksanakan Proyek Berbasis Komunitas",
+        "desc": "Berkolaborasi dengan komunitas lokal, pemerintah, dan lembaga keuangan untuk merancang dan melaksanakan proyek yang memanfaatkan prinsip keuangan Islam bagi kebaikan sosial."
+      },
+      {
+        "title": "Mendukung Pembangunan Ekonomi Berkelanjutan",
+        "desc": "Mendukung inisiatif yang mendorong pertumbuhan inklusif, pengentasan kemiskinan, dan keadilan sosial, sesuai dengan prinsip etika keuangan Islam."
+      },
+      {
+        "title": "Mendorong Kolaborasi dan Keterlibatan",
+        "desc": "Membangun kemitraan dengan pemangku kepentingan utama di berbagai sektor, termasuk akademisi, bisnis, dan masyarakat sipil, untuk menciptakan dampak kolektif di bidang keuangan sosial Islam."
+      },
+      {
+        "title": "Memajukan Penelitian dan Pengetahuan",
+        "desc": "Menghasilkan penelitian berbasis bukti yang kuat untuk menginformasikan kebijakan, praktik, dan pemahaman publik tentang instrumen keuangan sosial Islam seperti Zakat, Wakaf, dan Sukuk."
+      },
+      {
+        "title": "Memberdayakan Melalui Pendidikan dan Pelatihan",
+        "desc": "Menyediakan program pendampingan, pelatihan, dan pengembangan kapasitas berkualitas tinggi bagi individu, komunitas, dan organisasi yang terlibat atau ingin berpartisipasi di sektor keuangan sosial Islam."
+      }
+    ]
   },
   "footer": {
     "office": "Kantor",

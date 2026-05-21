@@ -7,8 +7,38 @@
     "article": "Article",
     "webinarSeries": "Webinar Series",
     "aboutUs": "About Us",
+    "visionMission": "Vision & Mission",
     "statistics": "Statistics",
     "searchPlaceholder": "Search publication..."
+  },
+  "vision": {
+    "breadcrumb": "About CISF",
+    "pageTitle": "Vision & Mission",
+    "visionLabel": "Vision",
+    "missionLabel": "Mission",
+    "visionText": "To become a leading hub for research, innovation, and community-driven initiatives in Islamic social finance, fostering financial inclusion, sustainable development, and social justice through the application of Islamic finance principles for the betterment of society.",
+    "missionItems": [
+      {
+        "title": "Implement Community-Centric Projects",
+        "desc": "To collaborate with local communities, governments, and financial institutions to design and execute projects that leverage Islamic finance principles for social good."
+      },
+      {
+        "title": "Support Sustainable Economic Development",
+        "desc": "Support initiatives that foster inclusive growth, reduce poverty, and advance social justice, in accordance with the ethical principles of Islamic finance."
+      },
+      {
+        "title": "Encourage Collaboration and Engagement",
+        "desc": "To form partnerships with key stakeholders across various sectors, including academia, business, and civil society, to create a collective impact in the field of Islamic social finance."
+      },
+      {
+        "title": "Advance Research and Knowledge",
+        "desc": "To produce rigorous, evidence-based research that informs policy, practice, and public understanding of Islamic social finance instruments such as Zakat, Waqf, and Sukuk."
+      },
+      {
+        "title": "Empower Through Education and Training",
+        "desc": "To provide high-quality mentoring, training, and capacity-building programs for individuals, communities, and organizations engaged in or aspiring to participate in the Islamic social finance sector."
+      }
+    ]
   },
   "footer": {
     "office": "Office",

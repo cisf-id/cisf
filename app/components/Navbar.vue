@@ -68,7 +68,10 @@ const navLinks = computed(() => [
     { label: t('nav.article'), to: '/article' },
     { label: t('nav.webinarSeries'), to: '/webinar-series' },
   ]},
-  { label: t('nav.aboutUs'), to: '/2025/05/what-is-cisf.html' },
+  { label: t('nav.aboutUs'), to: '', dropdown: [
+    { label: t('nav.visionMission'), to: '/vision-mission' },
+    { label: 'What is CISF?', to: '/2025/05/what-is-cisf.html' },
+  ]},
   { label: t('nav.statistics'), to: '/statistic' },
 ])
 
@@ -78,6 +81,7 @@ const navLinkMobiles = computed(() => [
   { label: t('nav.publication'), to: '/publication' },
   { label: t('nav.article'), to: '/article' },
   { label: t('nav.webinarSeries'), to: '/webinar-series' },
+  { label: t('nav.visionMission'), to: '/vision-mission' },
   { label: t('nav.aboutUs'), to: '/2025/05/what-is-cisf.html' },
   { label: t('nav.statistics'), to: '/statistic' },
 ])
