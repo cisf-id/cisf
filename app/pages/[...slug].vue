@@ -98,7 +98,6 @@ const cleanContent = (html: string) => {
       <article 
         v-else-if="post" 
         class="bg-white dark:bg-[#151515] rounded-2xl border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-100/50 dark:shadow-none p-6 sm:p-10 md:p-12"
-        v-reveal
       >
         <!-- Category Badge -->
         <span class="inline-block px-3 py-1 text-[9px] font-bold tracking-widest uppercase bg-[#eeba4b]/10 text-[#d49f2b] dark:text-[#f3c868] rounded-full mb-6">
@@ -128,7 +127,7 @@ const cleanContent = (html: string) => {
         </div>
 
         <!-- Content -->
-        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-justify" v-html="cleanContent(post.content)" v-reveal-left />
+        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-justify" v-html="cleanContent(post.content)" />
         
         <NuxtLink to="https://drive.google.com/file/d/18d-3fr6m0x-ozWMwjH4ONnznul-ynk3h/view?usp=sharing" target="_blank" class="inline-block mt-10 text-sm font-medium text-[#eeba4b] hover:text-[#d49f2b] transition-colors border border-[#eeba4b]/20 hover:border-[#eeba4b] px-4 py-2 rounded-lg" v-reveal>
           {{ locale === 'en' ? 'Download PDF of CISF Company Profile' : 'Unduh PDF Profil Perusahaan CISF' }}

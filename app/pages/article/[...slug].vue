@@ -47,12 +47,24 @@ const post = computed(() => {
 const cleanContent = (html: string) => {
   if (!html) return ''
   
-  // Hapus inline style background-color dan font-family
   let cleaned = html
+    // Hapus properti style yang merusak layout mobile
     .replace(/\s*background-color:\s*[^;'"]+;?/gi, '')
     .replace(/\s*font-family:\s*[^;'"]+;?/gi, '')
-    // Hapus attribute style yang kosong
+    .replace(/\s*overflow:\s*[^;'"]+;?/gi, '')
+    .replace(/\s*max-height:\s*[^;'"]+;?/gi, '')
+    .replace(/\s*display:\s*table[^;'"]*;?/gi, '')
+    // Hapus fixed width/height dalam pixel (merusak responsif mobile)
+    .replace(/\s*width:\s*\d+px;?/gi, '')
+    .replace(/\s*height:\s*\d+px;?/gi, '')
+    .replace(/\s*min-height:\s*\d+px;?/gi, '')
+    .replace(/\s*min-width:\s*\d+px;?/gi, '')
+    // Hapus attribute width dan height di elemen (bukan style)
+    .replace(/(<(?:div|table|td|th|tr|p|span)[^>]*)\s+width="\d+[^"]*"/gi, '$1')
+    .replace(/(<(?:div|table|td|th|tr|p|span)[^>]*)\s+height="\d+[^"]*"/gi, '$1')
+    // Hapus style yang kosong setelah pembersihan
     .replace(/\s*style=["']\s*["']/gi, '')
+    .replace(/\s*style=["'][;\s]*["']/gi, '')
 
   // Ganti URL gambar agar tidak blur (menggunakan ukuran original /s0/ atau =s0)
   cleaned = cleaned.replace(/src="([^"]+)"/g, (match, url) => {
@@ -94,7 +106,6 @@ const cleanContent = (html: string) => {
       <article 
         v-else-if="post" 
         class="bg-white dark:bg-[#151515] rounded-2xl border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-100/50 dark:shadow-none p-6 sm:p-10 md:p-12"
-        v-reveal
       >
         <!-- Category Badge -->
         <span class="inline-block px-3 py-1 text-[9px] font-bold tracking-widest uppercase bg-[#eeba4b]/10 text-[#d49f2b] dark:text-[#f3c868] rounded-full mb-6">
@@ -124,7 +135,7 @@ const cleanContent = (html: string) => {
         </div>
 
         <!-- Content -->
-        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-justify" v-html="cleanContent(post.content)" v-reveal-left />
+        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-justify" v-html="cleanContent(post.content)" />
       </article>
     </div>
   </div>
@@ -134,14 +145,33 @@ const cleanContent = (html: string) => {
 :deep(.prose) {
   font-size: 14.5px;
   line-height: 1.85;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
+
+/* Paksa semua elemen di dalam prose agar responsif */
+:deep(.prose *) {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+:deep(.prose div),
+:deep(.prose span),
+:deep(.prose p) {
+  overflow: visible !important;
+  max-height: none !important;
+  height: auto !important;
+  width: auto !important;
+}
+
 :deep(.prose img) {
-  margin: 2.5rem auto;
+  margin: 2rem auto !important;
   border-radius: 0.75rem;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(229, 231, 235, 0.5);
-  max-width: 100%;
-  height: auto;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
   display: block;
 }
 .dark :deep(.prose img) {
@@ -171,14 +201,20 @@ const cleanContent = (html: string) => {
 .dark :deep(.prose h3) {
   color: #eee;
 }
+
+/* Table responsif untuk mobile */
 :deep(.prose table) {
-  width: 100%;
+  width: 100% !important;
   margin: 2rem 0;
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 :deep(.prose th), :deep(.prose td) {
   border: 1px solid rgba(229, 231, 235, 1);
   padding: 0.75rem 1rem;
+  white-space: nowrap;
 }
 .dark :deep(.prose th), .dark :deep(.prose td) {
   border-color: rgba(255, 255, 255, 0.05);
@@ -188,5 +224,14 @@ const cleanContent = (html: string) => {
 }
 .dark :deep(.prose th) {
   background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Iframe / embed responsif (YouTube dll) */
+:deep(.prose iframe) {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 200px;
+  border-radius: 0.5rem;
 }
 </style>

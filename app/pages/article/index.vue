@@ -94,14 +94,38 @@ function extractImage(content: string | undefined): string | null {
   return match?.[1] ?? null
 }
 
+// Bersihkan URL Blogger dari angka ID di akhir (misal: _02099506626)
+function cleanBloggerUrl(url: string): string {
+  try {
+    const pathname = new URL(url).pathname
+    // Hapus suffix angka panjang dan .html
+    const cleaned = pathname
+      .replace(/\.html$/, '')
+      .replace(/_\d{8,}$/, '')  // hapus _XXXXXXXX angka di akhir
+    return `/article${cleaned}`
+  } catch {
+    return url
+  }
+}
+
+// Simpan mapping dari clean slug ke original blogger path
+const slugToOriginalPath = ref<Record<string, string>>({})
+
 const articles = computed(() => {
   if (!articleData.value?.items) return [];
-  return articleData.value.items.map((post) => ({
-    title: post.title,
-    author: post.author.displayName,
-    image: extractImage(post.content) || null,
-    url: `/article${new URL(post.url).pathname}`
-  }));
+  return articleData.value.items.map((post) => {
+    const originalPath = new URL(post.url).pathname
+    const cleanUrl = cleanBloggerUrl(post.url)
+    // Simpan mapping untuk digunakan saat routing
+    slugToOriginalPath.value[cleanUrl] = originalPath
+    return {
+      title: post.title,
+      author: post.author.displayName,
+      image: extractImage(post.content) || null,
+      url: cleanUrl,
+      originalPath,
+    }
+  });
 });
 </script>
 
