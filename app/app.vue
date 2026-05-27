@@ -12,9 +12,7 @@ nuxtApp.hook('vue:error', () => {
 </script>
 
 <template>
-  <div class="min-h-screen w-full max-w-full overflow-x-hidden">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
