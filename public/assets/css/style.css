@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@custom-variant hover (&:hover);
-
-@layer base {
-<<<<<<< HEAD
   html,
   body {
     width: 100%;
@@ -30,7 +26,7 @@
     max-width: 100%;
   }
 
-=======
+  @font-face {
 >>>>>>> parent of a1da6d1 (fix: prevent horizontal overflow)
   @font-face {
     font-family: "Montserrat-ExtraLight";
