@@ -14,13 +14,28 @@ const { locale } = useI18n()
 function extractAbstract(content: string | undefined): string {
   if (!content) return ''
 
-  const stripped = content
+  const cleaned = content
+    // hapus style dan script agar CSS tidak muncul di hasil pencarian
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, ' ')
+
+    // hapus komentar HTML
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+
+    // hapus tag HTML
     .replace(/<[^>]+>/g, ' ')
+
+    // ubah entity umum
     .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+
+    // rapikan spasi
     .replace(/\s+/g, ' ')
     .trim()
 
-  return stripped.length > 260 ? stripped.slice(0, 260) + '…' : stripped
+  return cleaned.length > 260 ? cleaned.slice(0, 260) + '…' : cleaned
 }
 
 const researchs = computed(() => {
@@ -186,6 +201,3 @@ const researchs = computed(() => {
     </div>
   </section>
 </template>
-```
-
-Kode ini menggantikan versi sebelumnya yang masih memakai label/filter dan accordion pada bagian research. 
