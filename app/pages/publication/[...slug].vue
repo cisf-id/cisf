@@ -53,7 +53,6 @@ const post = computed(() => {
         year: 'numeric'
       }
     ),
-    year: new Date(postData.value.published).getFullYear(),
     image: extractImage(postData.value.content),
     content: removeFirstImage(postData.value.content)
   }
@@ -80,19 +79,19 @@ const cleanContent = (html: string) => {
 <template>
   <Watermark />
 
-  <main class="min-h-screen bg-[#f4f1e8] dark:bg-[#090909]">
+  <main class="min-h-screen bg-[#f5f1e8] dark:bg-[#090909]">
     <!-- Hero -->
-    <section class="relative overflow-hidden pt-32 pb-12 sm:pt-36 lg:pt-40 lg:pb-16">
+    <section class="relative overflow-hidden pt-32 pb-14 sm:pt-36 lg:pt-40 lg:pb-20">
       <div class="pointer-events-none absolute inset-0">
-        <div class="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-white/70 blur-3xl dark:bg-white/[0.03]"></div>
-        <div class="absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-[#c49a3b]/10 blur-3xl"></div>
+        <div class="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-white/70 blur-3xl dark:bg-white/[0.03]"></div>
+        <div class="absolute right-0 top-1/3 h-[30rem] w-[30rem] rounded-full bg-[#c49a3b]/10 blur-3xl"></div>
       </div>
 
       <div class="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <!-- Back link -->
+        <!-- Back -->
         <NuxtLink
           to="/publication"
-          class="group mb-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-500 transition-colors hover:text-[#b88a2e] dark:text-gray-400 dark:hover:text-[#eeba4b]"
+          class="group mb-12 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-500 transition-colors hover:text-[#b88a2e] dark:text-gray-400 dark:hover:text-[#eeba4b]"
         >
           <svg
             class="h-4 w-4 transition-transform group-hover:-translate-x-1"
@@ -122,32 +121,49 @@ const cleanContent = (html: string) => {
           {{ locale === 'en' ? 'Publication not found.' : 'Publikasi tidak ditemukan.' }}
         </div>
 
-        <!-- Post -->
-        <article v-else-if="post" v-reveal>
-          <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
-            <!-- Title Area -->
-            <div>
-              <span class="mb-6 inline-flex rounded-full bg-[#c49a3b]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-[#b88a2e]">
+        <!-- Header Post -->
+        <article
+          v-else-if="post"
+          v-reveal
+          class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center"
+        >
+          <!-- Text -->
+          <div>
+            <div class="mb-7 flex items-center gap-3">
+              <span class="h-px w-12 bg-[#b88a2e]"></span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.28em] text-[#b88a2e]">
                 {{ locale === 'en' ? 'Publication' : 'Publikasi' }}
               </span>
-
-              <h1 class="max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-gray-950 dark:text-white sm:text-4xl lg:text-5xl">
-                {{ post.title }}
-              </h1>
-
-              <p class="mt-7 max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-400">
-                {{ locale === 'en'
-                  ? 'A curated academic publication from the Center of Islamic Social Finance, presented with a clean and reader-focused layout.'
-                  : 'Publikasi akademik Center of Islamic Social Finance yang disajikan dalam tampilan bersih, elegan, dan nyaman dibaca.'
-                }}
-              </p>
             </div>
 
-            <!-- Cover Image -->
-            <div
-              v-if="post.image"
-              class="overflow-hidden rounded-[2rem] border border-white/70 bg-white p-3 shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none"
-            >
+            <h1 class="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-gray-950 dark:text-white sm:text-5xl lg:text-6xl">
+              {{ post.title }}
+            </h1>
+
+            <div class="mt-8 flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+              <span class="font-medium text-gray-800 dark:text-gray-200">
+                {{ post.author.displayName }}
+              </span>
+              <span class="text-gray-300 dark:text-white/20">•</span>
+              <span>{{ post.published }}</span>
+            </div>
+
+            <p class="mt-8 max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-400">
+              {{ locale === 'en'
+                ? 'A CISF academic publication presented in a clean, focused, and reader-friendly format.'
+                : 'Publikasi akademik CISF yang disajikan secara bersih, fokus, dan nyaman dibaca.'
+              }}
+            </p>
+          </div>
+
+          <!-- Cover -->
+          <div
+            v-if="post.image"
+            class="relative"
+          >
+            <div class="absolute -inset-4 rounded-[2.5rem] bg-[#c49a3b]/10 blur-2xl"></div>
+
+            <div class="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white p-3 shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none">
               <img
                 :src="post.image"
                 :alt="post.title"
@@ -159,58 +175,28 @@ const cleanContent = (html: string) => {
       </div>
     </section>
 
-    <!-- Body -->
-    <section v-if="post" class="pb-16 sm:pb-20 lg:pb-24">
+    <!-- Article Body -->
+    <section v-if="post" class="pb-16 sm:pb-20 lg:pb-28">
       <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
-          <!-- Meta Sidebar -->
-          <aside class="lg:sticky lg:top-28">
-            <div class="rounded-[1.5rem] border border-black/5 bg-white p-6 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-[#151515] dark:shadow-none">
-              <p class="mb-5 text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">
-                Publication Detail
-              </p>
-
-              <div class="space-y-5">
-                <div>
-                  <p class="mb-1 text-[10px] uppercase tracking-[0.18em] text-gray-400">
-                    Author
-                  </p>
-                  <p class="text-sm font-medium leading-relaxed text-gray-900 dark:text-white">
-                    {{ post.author.displayName }}
-                  </p>
-                </div>
-
-                <div class="h-px bg-gray-100 dark:bg-white/10"></div>
-
-                <div>
-                  <p class="mb-1 text-[10px] uppercase tracking-[0.18em] text-gray-400">
-                    Published
-                  </p>
-                  <p class="text-sm font-medium leading-relaxed text-gray-900 dark:text-white">
-                    {{ post.published }}
-                  </p>
-                </div>
-
-                <div class="h-px bg-gray-100 dark:bg-white/10"></div>
-
-                <div>
-                  <p class="mb-1 text-[10px] uppercase tracking-[0.18em] text-gray-400">
-                    Year
-                  </p>
-                  <p class="text-sm font-medium leading-relaxed text-gray-900 dark:text-white">
-                    {{ post.year }}
-                  </p>
-                </div>
+        <div class="mx-auto max-w-5xl border-t border-black/10 pt-12 dark:border-white/10">
+          <div class="grid gap-10 lg:grid-cols-[180px_minmax(0,1fr)]">
+            <!-- Left label only, not card -->
+            <aside class="hidden lg:block">
+              <div class="sticky top-28">
+                <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-400">
+                  Article
+                </p>
+                <div class="mt-4 h-px w-16 bg-[#b88a2e]"></div>
               </div>
-            </div>
-          </aside>
+            </aside>
 
-          <!-- Content -->
-          <div class="rounded-[2rem] border border-black/5 bg-white px-5 py-8 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-[#151515] dark:shadow-none sm:px-8 sm:py-10 lg:px-16 lg:py-16">
-            <div
-              class="publication-content prose max-w-none text-gray-800 dark:prose-invert dark:text-gray-200"
-              v-html="cleanContent(post.content)"
-            />
+            <!-- Content -->
+            <article class="min-w-0">
+              <div
+                class="publication-content prose max-w-none text-gray-800 dark:prose-invert dark:text-gray-200"
+                v-html="cleanContent(post.content)"
+              />
+            </article>
           </div>
         </div>
       </div>
@@ -221,8 +207,6 @@ const cleanContent = (html: string) => {
 <style scoped>
 :deep(.publication-content) {
   max-width: 820px;
-  margin-left: auto;
-  margin-right: auto;
   font-size: 16px;
   line-height: 1.95;
   color: #1f2937;
@@ -231,6 +215,16 @@ const cleanContent = (html: string) => {
 :deep(.publication-content p) {
   margin-bottom: 1.55rem;
   text-align: justify;
+}
+
+:deep(.publication-content p:first-child) {
+  font-size: 18px;
+  line-height: 1.9;
+  color: #111827;
+}
+
+.dark :deep(.publication-content p:first-child) {
+  color: #f9fafb;
 }
 
 :deep(.publication-content img) {
@@ -336,8 +330,10 @@ const cleanContent = (html: string) => {
     line-height: 1.85;
   }
 
-  :deep(.publication-content p) {
+  :deep(.publication-content p),
+  :deep(.publication-content p:first-child) {
     text-align: left;
+    font-size: 14.8px;
   }
 }
 </style>
