@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
-const slugParam = route.params.slug as string
-const slugPath = Array.isArray(slugParam) 
-? slugParam.join('/') 
-: slugParam
+const slugParam = route.params.slug as string | string[]
+const slugPath = Array.isArray(slugParam)
+  ? slugParam.join('/')
+  : slugParam
 
 interface Post {
   title: string
@@ -12,54 +12,65 @@ interface Post {
   content: string
 }
 
-const { t, locale } = useI18n()
-const { data: stats } = await useFetch(`/api/views/${slugPath}`);
+const { locale } = useI18n()
+
+function normalizeImageUrl(url: string): string {
+  return url
+    .replace(/\/(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*\//g, '/s0/')
+    .replace(/=(s\d+|w\d+|h\d+|w\d+)(-[a-zA-Z0-9-]+)*(?=[&"]|$)/g, '=s0')
+}
 
 function extractImage(content: string | undefined): string | null {
   if (!content) return null
+
   const match = content.match(/<img[^>]+src="([^">]+)"/)
   const url = match?.[1]
-  if (!url) return null
-  
-  return url
-    .replace(/\/(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*\//g, '/s0/')
-    .replace(/=(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*(?=[&"]|$)/g, '=s0')
+
+  return url ? normalizeImageUrl(url) : null
+}
+
+function removeFirstImage(content: string | undefined): string {
+  if (!content) return ''
+  return content.replace(/<img[^>]*>/i, '')
 }
 
 const { data: postData, pending, error } = await useFetch<Post>(
   `/api/post/${slugPath}`,
-  { key: `post-${slugPath}` }
+  { key: `publication-${slugPath}` }
 )
 
 const post = computed(() => {
   if (!postData.value) return null
+
   return {
     title: postData.value.title,
     author: postData.value.author,
-    published: new Date(postData.value.published).toLocaleDateString(locale.value === 'en' ? 'en-US' : 'id-ID', {
-      day: 'numeric', month: 'long', year: 'numeric',
-    }),
+    published: new Date(postData.value.published).toLocaleDateString(
+      locale.value === 'en' ? 'en-US' : 'id-ID',
+      {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }
+    ),
+    year: new Date(postData.value.published).getFullYear(),
     image: extractImage(postData.value.content),
-    content: postData.value.content,
+    content: removeFirstImage(postData.value.content)
   }
 })
 
 const cleanContent = (html: string) => {
   if (!html) return ''
-  
-  // Hapus inline style background-color dan font-family
+
   let cleaned = html
     .replace(/\s*background-color:\s*[^;'"]+;?/gi, '')
     .replace(/\s*font-family:\s*[^;'"]+;?/gi, '')
-    // Hapus attribute style yang kosong
     .replace(/\s*style=["']\s*["']/gi, '')
+    .replace(/<span[^>]*>\s*<\/span>/gi, '')
+    .replace(/&nbsp;/g, ' ')
 
-  // Ganti URL gambar agar tidak blur (menggunakan ukuran original /s0/ atau =s0)
   cleaned = cleaned.replace(/src="([^"]+)"/g, (match, url) => {
-    const newUrl = url
-      .replace(/\/(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*\//g, '/s0/')
-      .replace(/=(s\d+|w\d+|h\d+|w\d+-h\d+)(-[a-zA-Z0-9-]+)*(?=[&"]|$)/g, '=s0')
-    return `src="${newUrl}"`
+    return `src="${normalizeImageUrl(url)}"`
   })
 
   return cleaned
@@ -67,126 +78,266 @@ const cleanContent = (html: string) => {
 </script>
 
 <template>
-  <Watermark/>
-  <div class="bg-[#f7f7f7] dark:bg-[#0a0a0a] min-h-screen py-16 sm:py-24">
-    <div class="max-w-3xl mx-auto px-4">
-      <!-- Back button -->
-      <NuxtLink 
-        to="/publication" 
-        class="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-gray-500 hover:text-[#eeba4b] dark:text-gray-400 dark:hover:text-[#eeba4b] transition-colors mb-8 group"
-      >
-        <svg class="w-4.5 h-4.5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-        </svg>
-        {{ locale === 'en' ? 'Back to Publications' : 'Kembali ke Publikasi' }}
-      </NuxtLink>
+  <Watermark />
 
-      <div v-if="pending" class="text-center py-20 text-gray-400 text-sm">
-        <div class="animate-pulse flex flex-col items-center gap-4">
-          <div class="w-10 h-10 rounded-full border-2 border-gray-200 border-t-[#eeba4b] animate-spin"></div>
-          <span>{{ locale === 'en' ? 'Loading publication...' : 'Memuat publikasi...' }}</span>
-        </div>
-      </div>
-      <div v-else-if="error" class="text-center py-20 text-red-500 text-sm bg-white dark:bg-[#151515] rounded-2xl border border-gray-100 dark:border-white/5 shadow-md">
-        {{ locale === 'en' ? 'Publication not found.' : 'Publikasi tidak ditemukan.' }}
+  <main class="min-h-screen bg-[#f4f1e8] dark:bg-[#090909]">
+    <!-- Hero -->
+    <section class="relative overflow-hidden pt-32 pb-12 sm:pt-36 lg:pt-40 lg:pb-16">
+      <div class="pointer-events-none absolute inset-0">
+        <div class="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-white/70 blur-3xl dark:bg-white/[0.03]"></div>
+        <div class="absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-[#c49a3b]/10 blur-3xl"></div>
       </div>
 
-      <article 
-        v-else-if="post" 
-        class="bg-white dark:bg-[#151515] rounded-2xl border border-gray-100 dark:border-white/5 shadow-xl shadow-gray-100/50 dark:shadow-none p-6 sm:p-10 md:p-12"
-        v-reveal
-      >
-        <!-- Category Badge -->
-        <span class="inline-block px-3 py-1 text-[9px] font-bold tracking-widest uppercase bg-[#eeba4b]/10 text-[#d49f2b] dark:text-[#f3c868] rounded-full mb-6">
-          {{ locale === 'en' ? 'Publication' : 'Publikasi' }}
-        </span>
+      <div class="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <!-- Back link -->
+        <NuxtLink
+          to="/publication"
+          class="group mb-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-gray-500 transition-colors hover:text-[#b88a2e] dark:text-gray-400 dark:hover:text-[#eeba4b]"
+        >
+          <svg
+            class="h-4 w-4 transition-transform group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          {{ locale === 'en' ? 'Back to Publication' : 'Kembali ke Publikasi' }}
+        </NuxtLink>
 
-        <!-- Title -->
-        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white leading-snug mb-6">
-          {{ post.title }}
-        </h1>
-
-        <!-- Meta info -->
-        <div class="flex flex-wrap items-center gap-4 text-xs text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-white/5 pb-6 mb-8">
-          <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-            </svg>
-            <span>{{ post.author.displayName }}</span>
-          </div>
-          <span class="text-gray-300 dark:text-white/10 hidden sm:inline">•</span>
-          <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
-            </svg>
-            <span>{{ post.published }}</span>
+        <!-- Loading -->
+        <div v-if="pending" class="py-24 text-center text-sm text-gray-400">
+          <div class="flex animate-pulse flex-col items-center gap-4">
+            <div class="h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-[#c49a3b]"></div>
+            <span>{{ locale === 'en' ? 'Loading publication...' : 'Memuat publikasi...' }}</span>
           </div>
         </div>
 
-        <!-- Content -->
-        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-justify" v-html="cleanContent(post.content)" />
-      </article>
-    </div>
-  </div>
+        <!-- Error -->
+        <div
+          v-else-if="error"
+          class="rounded-3xl border border-gray-100 bg-white px-6 py-20 text-center text-sm text-red-500 shadow-sm dark:border-white/10 dark:bg-[#151515]"
+        >
+          {{ locale === 'en' ? 'Publication not found.' : 'Publikasi tidak ditemukan.' }}
+        </div>
+
+        <!-- Post -->
+        <article v-else-if="post" v-reveal>
+          <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+            <!-- Title Area -->
+            <div>
+              <span class="mb-6 inline-flex rounded-full bg-[#c49a3b]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-[#b88a2e]">
+                {{ locale === 'en' ? 'Publication' : 'Publikasi' }}
+              </span>
+
+              <h1 class="max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-gray-950 dark:text-white sm:text-4xl lg:text-5xl">
+                {{ post.title }}
+              </h1>
+
+              <p class="mt-7 max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-400">
+                {{ locale === 'en'
+                  ? 'A curated academic publication from the Center of Islamic Social Finance, presented with a clean and reader-focused layout.'
+                  : 'Publikasi akademik Center of Islamic Social Finance yang disajikan dalam tampilan bersih, elegan, dan nyaman dibaca.'
+                }}
+              </p>
+            </div>
+
+            <!-- Cover Image -->
+            <div
+              v-if="post.image"
+              class="overflow-hidden rounded-[2rem] border border-white/70 bg-white p-3 shadow-2xl shadow-black/10 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none"
+            >
+              <img
+                :src="post.image"
+                :alt="post.title"
+                class="h-auto w-full rounded-[1.4rem] object-cover"
+              />
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Body -->
+    <section v-if="post" class="pb-16 sm:pb-20 lg:pb-24">
+      <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
+          <!-- Meta Sidebar -->
+          <aside class="lg:sticky lg:top-28">
+            <div class="rounded-[1.5rem] border border-black/5 bg-white p-6 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-[#151515] dark:shadow-none">
+              <p class="mb-5 text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">
+                Publication Detail
+              </p>
+
+              <div class="space-y-5">
+                <div>
+                  <p class="mb-1 text-[10px] uppercase tracking-[0.18em] text-gray-400">
+                    Author
+                  </p>
+                  <p class="text-sm font-medium leading-relaxed text-gray-900 dark:text-white">
+                    {{ post.author.displayName }}
+                  </p>
+                </div>
+
+                <div class="h-px bg-gray-100 dark:bg-white/10"></div>
+
+                <div>
+                  <p class="mb-1 text-[10px] uppercase tracking-[0.18em] text-gray-400">
+                    Published
+                  </p>
+                  <p class="text-sm font-medium leading-relaxed text-gray-900 dark:text-white">
+                    {{ post.published }}
+                  </p>
+                </div>
+
+                <div class="h-px bg-gray-100 dark:bg-white/10"></div>
+
+                <div>
+                  <p class="mb-1 text-[10px] uppercase tracking-[0.18em] text-gray-400">
+                    Year
+                  </p>
+                  <p class="text-sm font-medium leading-relaxed text-gray-900 dark:text-white">
+                    {{ post.year }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Content -->
+          <div class="rounded-[2rem] border border-black/5 bg-white px-5 py-8 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-[#151515] dark:shadow-none sm:px-8 sm:py-10 lg:px-16 lg:py-16">
+            <div
+              class="publication-content prose max-w-none text-gray-800 dark:prose-invert dark:text-gray-200"
+              v-html="cleanContent(post.content)"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </template>
 
 <style scoped>
-:deep(.prose) {
-  font-size: 14.5px;
-  line-height: 1.85;
+:deep(.publication-content) {
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 16px;
+  line-height: 1.95;
+  color: #1f2937;
 }
-:deep(.prose img) {
-  margin: 2.5rem auto;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(229, 231, 235, 0.5);
+
+:deep(.publication-content p) {
+  margin-bottom: 1.55rem;
+  text-align: justify;
+}
+
+:deep(.publication-content img) {
+  display: block;
   max-width: 100%;
   height: auto;
-  display: block;
+  margin: 2.75rem auto;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(229, 231, 235, 0.85);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.35);
 }
-.dark :deep(.prose img) {
-  border-color: rgba(255, 255, 255, 0.05);
+
+.dark :deep(.publication-content img) {
+  border-color: rgba(255, 255, 255, 0.1);
   box-shadow: none;
 }
-:deep(.prose p) {
-  margin-bottom: 1.5rem;
-}
-:deep(.prose h2) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 2.5rem;
+
+:deep(.publication-content h2) {
+  margin-top: 2.8rem;
   margin-bottom: 1rem;
-  color: #111;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #111827;
 }
-.dark :deep(.prose h2) {
-  color: #fff;
+
+:deep(.publication-content h3) {
+  margin-top: 2.3rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #1f2937;
 }
-:deep(.prose h3) {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  color: #222;
+
+.dark :deep(.publication-content h2),
+.dark :deep(.publication-content h3) {
+  color: #ffffff;
 }
-.dark :deep(.prose h3) {
-  color: #eee;
+
+:deep(.publication-content a) {
+  color: #b88a2e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-:deep(.prose table) {
+
+:deep(.publication-content ul),
+:deep(.publication-content ol) {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+:deep(.publication-content li) {
+  margin-bottom: 0.65rem;
+}
+
+:deep(.publication-content blockquote) {
+  margin: 2rem 0;
+  border-left: 4px solid #c49a3b;
+  padding-left: 1.25rem;
+  color: #4b5563;
+  font-style: italic;
+}
+
+:deep(.publication-content table) {
   width: 100%;
   margin: 2rem 0;
   border-collapse: collapse;
+  font-size: 14px;
 }
-:deep(.prose th), :deep(.prose td) {
+
+:deep(.publication-content th),
+:deep(.publication-content td) {
   border: 1px solid rgba(229, 231, 235, 1);
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
+  vertical-align: top;
 }
-.dark :deep(.prose th), .dark :deep(.prose td) {
-  border-color: rgba(255, 255, 255, 0.05);
+
+:deep(.publication-content th) {
+  background: #f9fafb;
+  font-weight: 700;
 }
-:deep(.prose th) {
-  background-color: rgba(0, 0, 0, 0.02);
+
+.dark :deep(.publication-content th),
+.dark :deep(.publication-content td) {
+  border-color: rgba(255, 255, 255, 0.1);
 }
-.dark :deep(.prose th) {
-  background-color: rgba(255, 255, 255, 0.02);
+
+.dark :deep(.publication-content th) {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 1024px) {
+  :deep(.publication-content) {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  :deep(.publication-content) {
+    font-size: 14.8px;
+    line-height: 1.85;
+  }
+
+  :deep(.publication-content p) {
+    text-align: left;
+  }
 }
 </style>
