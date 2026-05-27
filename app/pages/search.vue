@@ -27,21 +27,86 @@ function extractAbstract(content: string | undefined): string {
   return stripped.length > 260 ? stripped.slice(0, 260) + '…' : stripped
 }
 
-function toLocalUrl(url: string): string {
-  try {
-    const pathname = new URL(url).pathname
-    return pathname
-  } catch {
-    return url
+function normalizeLabel(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .trim()
+}
+
+function getPostCategory(post: any): {
+  type: string
+  prefix: string
+} {
+  const labels = Array.isArray(post.labels)
+    ? post.labels.map((label: string) => normalizeLabel(label))
+    : []
+
+  if (labels.includes('article') || labels.includes('artikel')) {
+    return {
+      type: 'Article',
+      prefix: '/article'
+    }
+  }
+
+  if (
+    labels.includes('publication') ||
+    labels.includes('publications') ||
+    labels.includes('publikasi')
+  ) {
+    return {
+      type: 'Publication',
+      prefix: '/publication'
+    }
+  }
+
+  if (labels.includes('research') || labels.includes('riset')) {
+    return {
+      type: 'Research',
+      prefix: '/research'
+    }
+  }
+
+  if (
+    labels.includes('webinar-series') ||
+    labels.includes('webinar') ||
+    labels.includes('webinar-series')
+  ) {
+    return {
+      type: 'Webinar Series',
+      prefix: '/webinar-series'
+    }
+  }
+
+  return {
+    type: 'Post',
+    prefix: ''
   }
 }
 
-function detectType(url: string): string {
-  if (url.includes('/article/')) return 'Article'
-  if (url.includes('/webinar-series/')) return 'Webinar Series'
-  if (url.includes('/research/')) return 'Research'
-  if (url.includes('/publication/')) return 'Publication'
-  return 'Post'
+function toLocalUrl(post: any): string {
+  const category = getPostCategory(post)
+
+  try {
+    const pathname = new URL(post.url).pathname
+
+    if (
+      pathname.startsWith('/article/') ||
+      pathname.startsWith('/publication/') ||
+      pathname.startsWith('/research/') ||
+      pathname.startsWith('/webinar-series/')
+    ) {
+      return pathname
+    }
+
+    return `${category.prefix}${pathname}`
+  } catch {
+    return post.url
+  }
+}
+
+function detectType(post: any): string {
+  return getPostCategory(post).type
 }
 
 const results = computed(() => {
@@ -60,8 +125,8 @@ const results = computed(() => {
       }
     ),
     abstract: parseLocaleText(extractAbstract(post.content), locale.value),
-    url: toLocalUrl(post.url),
-    type: detectType(post.url)
+    url: toLocalUrl(post),
+    type: detectType(post)
   }))
 })
 </script>
