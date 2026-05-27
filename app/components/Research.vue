@@ -1,12 +1,26 @@
-<script setup lang="ts">
+Siap. Ini versi **terima jadi**. Langsung **replace seluruh file komponen research** kamu dengan kode ini. Versi ini sudah:
 
+* tampilan lebih elegan seperti card editorial CELIOS
+* tanpa filter/label research
+* tanpa accordion
+* langsung menampilkan Research, tahun, judul, author, tanggal, ringkasan, dan View research
+* responsive untuk mobile dan desktop
+
+```vue
+<script setup lang="ts">
 const { data: researchData, pending } = useFetch("/api/research/top5Research")
 const { locale } = useI18n()
 
 function extractAbstract(content: string | undefined): string {
   if (!content) return ''
-  const stripped = content.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
-  return stripped.length > 300 ? stripped.slice(0, 300) + '…' : stripped
+
+  const stripped = content
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  return stripped.length > 260 ? stripped.slice(0, 260) + '…' : stripped
 }
 
 const researchs = computed(() => {
@@ -21,146 +35,157 @@ const researchs = computed(() => {
     id: post.id,
     title: parseLocaleText(post.title, locale.value),
     author: post.author.displayName,
-    date: new Date(post.published).toLocaleDateString(locale.value === 'en' ? 'en-US' : 'id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+    date: new Date(post.published).toLocaleDateString(
+      locale.value === 'en' ? 'en-US' : 'id-ID',
+      {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }
+    ),
     year: new Date(post.published).getFullYear().toString(),
     abstract: parseLocaleText(extractAbstract(post.content), locale.value),
-    labels: post.labels ?? [],
     url: `/research${new URL(post.url).pathname}`
   }))
 })
-
-// Hanya satu item yang terbuka dalam satu waktu
-const openIndex = ref<number | null>(null)
-const toggle = (i: number) => {
-  openIndex.value = openIndex.value === i ? null : i
-}
 </script>
 
 <template>
-  <section class="py-10 sm:py-14 lg:py-16 border-b border-gray-100 dark:border-white/10 bg-[#ffffff] dark:bg-transparent">
-    <div class="container mx-auto px-4 sm:px-6">
-      <!-- Section header -->
-      <div class="flex justify-between items-end" v-reveal>
-        <div>
-          <p class="text-[10px] tracking-widest uppercase text-gray-400 mb-1">{{ $t('research.label') }}</p>
-          <h2 class="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">{{ $t('research.title') }}</h2>
-          <div class="w-8 h-0.5 bg-gray-900 dark:bg-white mt-3 mb-6 sm:mb-7"></div>
+  <section class="relative overflow-hidden bg-[#f7f3eb] dark:bg-gray-950 py-16 sm:py-20 lg:py-24">
+    <!-- Soft background accent -->
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute -top-32 -left-32 h-72 w-72 rounded-full bg-white/70 blur-3xl"></div>
+      <div class="absolute -bottom-40 -right-32 h-96 w-96 rounded-full bg-black/[0.04] dark:bg-white/[0.05] blur-3xl"></div>
+    </div>
+
+    <div class="container relative mx-auto px-4 sm:px-6">
+      <!-- Section Header -->
+      <div class="mb-10 sm:mb-14" v-reveal>
+        <div class="mb-4 flex items-center gap-3">
+          <span class="h-px w-10 bg-gray-900 dark:bg-white"></span>
+          <p class="text-[11px] uppercase tracking-[0.28em] text-gray-500 dark:text-gray-400">
+            {{ $t('research.label') }}
+          </p>
         </div>
-        <NuxtLink
-          to="/research"
-          class="text-xs text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-6 sm:mb-7 flex items-center gap-1.5 group shrink-0 ml-4"
-        >
-          <span class="hidden sm:inline">{{ $t('research.all') }}</span>
-          <span class="sm:hidden text-[10px]">{{ $t('research.allMobile') }}</span>
-          <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
-            <path d="M3 8h10M9 4l4 4-4 4"/>
-          </svg>
-        </NuxtLink>
+
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <h2 class="max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-gray-950 dark:text-white sm:text-4xl lg:text-5xl">
+            {{ $t('research.title') }}
+          </h2>
+
+          <NuxtLink
+            to="/research"
+            class="group inline-flex w-fit items-center gap-2 border-b border-gray-900 pb-1 text-sm font-medium text-gray-900 transition-colors hover:text-gray-600 dark:border-white dark:text-white dark:hover:text-gray-300"
+          >
+            <span>{{ $t('research.all') }}</span>
+            <svg
+              class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              viewBox="0 0 16 16"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </NuxtLink>
+        </div>
       </div>
 
-      <!-- Skeleton -->
-      <div v-if="pending" class="divide-y divide-gray-100 dark:divide-white/10">
-        <div v-for="i in 5" :key="i" class="py-4 animate-pulse">
-          <div class="flex gap-3">
-            <div class="h-3 w-5 bg-gray-200 dark:bg-white/10 rounded mt-1 shrink-0"></div>
-            <div class="flex-1 space-y-2">
-              <div class="flex gap-2">
-                <div class="h-4 w-12 bg-gray-200 dark:bg-white/10 rounded"></div>
-                <div class="h-4 w-10 bg-gray-200 dark:bg-white/10 rounded"></div>
-              </div>
-              <div class="h-4 bg-gray-200 dark:bg-white/10 rounded w-3/4"></div>
-              <div class="h-3 bg-gray-200 dark:bg-white/10 rounded w-1/3"></div>
-            </div>
+      <!-- Skeleton Loading -->
+      <div
+        v-if="pending"
+        class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
+      >
+        <div
+          v-for="i in 5"
+          :key="i"
+          class="min-h-[380px] animate-pulse rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.04] sm:p-7"
+        >
+          <div class="mb-6 flex items-center justify-between">
+            <div class="h-3 w-20 rounded bg-gray-200 dark:bg-white/10"></div>
+            <div class="h-4 w-10 rounded bg-gray-200 dark:bg-white/10"></div>
+          </div>
+
+          <div class="mb-3 h-7 w-5/6 rounded bg-gray-200 dark:bg-white/10"></div>
+          <div class="mb-5 h-7 w-3/4 rounded bg-gray-200 dark:bg-white/10"></div>
+          <div class="mb-8 h-4 w-2/3 rounded bg-gray-200 dark:bg-white/10"></div>
+
+          <div class="space-y-3">
+            <div class="h-4 w-full rounded bg-gray-200 dark:bg-white/10"></div>
+            <div class="h-4 w-full rounded bg-gray-200 dark:bg-white/10"></div>
+            <div class="h-4 w-4/5 rounded bg-gray-200 dark:bg-white/10"></div>
           </div>
         </div>
       </div>
 
-      <!-- List -->
-      <div v-else class="divide-y divide-gray-100 dark:divide-white/10">
-        <div
+      <!-- Research Cards -->
+      <div
+        v-else
+        class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
+      >
+        <article
           v-for="(research, i) in researchs"
           :key="research.id"
           v-reveal
           :style="{ transitionDelay: `${i as number * 0.06}s` }"
+          class="group flex min-h-[390px] flex-col rounded-[1.75rem] border border-black/5 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/[0.04] sm:p-7"
         >
-          <!-- Header row — klik untuk expand -->
-          <button
-            type="button"
-            class="w-full text-left flex items-start gap-3 py-4 group focus:outline-none"
-            @click="toggle(i as number)"
-            :aria-expanded="openIndex === i"
-          >
-            <!-- Nomor urut -->
-            <span class="text-[11px] text-gray-300 dark:text-white/30 tabular-nums pt-0.5 min-w-[20px]">
-              {{ String(i as number + 1).padStart(2, '0') }}
+          <!-- Category and Year -->
+          <div class="mb-7 flex items-center justify-between">
+            <span class="text-[11px] uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">
+              Research
             </span>
 
-            <div class="flex-1 min-w-0">
-              <!-- Labels + tahun -->
-              <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-                <span
-                  v-for="label in research.labels.slice(0, 2)"
-                  :key="label"
-                  class="text-[9px] tracking-wider uppercase px-1.5 py-0.5 bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/10 rounded"
-                >
-                  {{ label }}
-                </span>
-                <span class="text-[10px] text-gray-400 dark:text-white/30 ml-auto tabular-nums">{{ research.year }}</span>
-              </div>
+            <span class="text-sm font-semibold tabular-nums text-gray-950 dark:text-white">
+              {{ research.year }}
+            </span>
+          </div>
 
-              <!-- Judul -->
-              <p class="text-[14px] sm:text-[15px] font-medium leading-snug text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors pr-4 break-words">
-                {{ research.title }}
-              </p>
+          <!-- Title -->
+          <NuxtLink :to="research.url" class="block">
+            <h3 class="text-xl font-semibold leading-tight tracking-tight text-gray-950 transition-colors group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300 sm:text-2xl">
+              {{ research.title }}
+            </h3>
+          </NuxtLink>
 
-              <!-- Author & date -->
-              <p class="text-[11px] text-gray-400 mt-1 break-words">
-                {{ research.author }}
-                <span class="mx-1 text-gray-200 dark:text-white/20">·</span>
-                {{ research.date }}
-              </p>
-            </div>
+          <!-- Author and Date -->
+          <p class="mt-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+            {{ research.author }}
+            <span class="mx-1.5 text-gray-300 dark:text-white/20">·</span>
+            {{ research.date }}
+          </p>
 
-            <!-- Chevron -->
-            <svg
-              class="w-4 h-4 shrink-0 mt-1 text-gray-300 dark:text-white/30 group-hover:text-gray-500 dark:group-hover:text-white/60 transition-all duration-200"
-              :class="{ 'rotate-90': openIndex === i }"
-              fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"
+          <!-- Abstract -->
+          <p class="mt-6 line-clamp-5 text-sm leading-7 text-gray-600 dark:text-gray-400">
+            {{ research.abstract || $t('research.abstractNotAvailable') }}
+          </p>
+
+          <!-- View Research -->
+          <div class="mt-auto pt-8">
+            <NuxtLink
+              :to="research.url"
+              class="group/link inline-flex items-center gap-2 text-sm font-medium text-gray-950 dark:text-white"
             >
-              <path d="M6 4l4 4-4 4"/>
-            </svg>
-          </button>
+              <span class="border-b border-gray-900 pb-0.5 transition-colors group-hover/link:border-gray-500 dark:border-white dark:group-hover/link:border-gray-300">
+                {{ $t('research.readMore') }}
+              </span>
 
-          <!-- Abstract accordion -->
-          <Transition
-            @enter="(el) => { (el as HTMLElement).style.maxHeight = (el as HTMLElement).scrollHeight + 'px' }"
-            @leave="(el) => { (el as HTMLElement).style.maxHeight = '0' }"
-          >
-            <div
-              v-if="openIndex === i"
-              class="overflow-hidden transition-[max-height] duration-300 ease-in-out"
-              style="max-height: 0;"
-            >
-              <div class="pb-4 pl-8">
-                <p class="text-[12.5px] text-gray-500 dark:text-gray-400 leading-relaxed break-words">
-                  {{ research.abstract || $t('research.abstractNotAvailable') }}
-                </p>
-                <NuxtLink
-                  :to="research.url"
-                  class="inline-flex items-center gap-1 mt-3 text-[12px] text-blue-600 dark:text-blue-400 hover:underline underline-offset-2 transition-colors"
-                  @click.stop
-                >
-                  {{ $t('research.readMore') }}
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                </NuxtLink>
-              </div>
-            </div>
-          </Transition>
-        </div>
+              <svg
+                class="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                viewBox="0 0 16 16"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8h10M9 4l4 4-4 4" />
+              </svg>
+            </NuxtLink>
+          </div>
+        </article>
       </div>
-
     </div>
   </section>
 </template>
+```
+
+Kode ini menggantikan versi sebelumnya yang masih memakai label/filter dan accordion pada bagian research. 
