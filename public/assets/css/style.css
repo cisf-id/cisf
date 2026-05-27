@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
-  html,
-  body {
 @custom-variant hover (&:hover);
 
 @layer base {
@@ -63,4 +60,10 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* Temporary fix: neutralize accidental vertical flips during debugging */
+html, body, #__nuxt, #app {
+  transform: none !important;
+  -webkit-transform: none !important;
 }
