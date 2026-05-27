@@ -75,7 +75,7 @@ const navLinks = computed(() => [
   ]},
   { label: t('nav.aboutUs'), to: '', dropdown: [
     { label: t('nav.visionMission'), to: '/vision-mission' },
-    { label: 'What is CISF?', to: 'about-cisf' },
+    { label: 'What is CISF?', to: '/about-cisf' },
   ]},
   { label: t('nav.statistics'), to: '/statistic' },
 ])
