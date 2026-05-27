@@ -87,7 +87,7 @@ const navLinkMobiles = computed(() => [
   { label: t('nav.article'), to: '/article' },
   { label: t('nav.webinarSeries'), to: '/webinar-series' },
   { label: t('nav.visionMission'), to: '/vision-mission' },
-  { label: t('nav.aboutUs'), to: '/about-cisf.html' },
+  { label: t('nav.aboutUs'), to: '/about-cisf' },
   { label: t('nav.statistics'), to: '/statistic' },
 ])
 
