@@ -54,7 +54,12 @@ onUnmounted(() => {
 const submitSearch = () => {
   const q = searchQuery.value.trim()
   if (!q) return
-  router.push({ path: '/publication', query: { q } })
+
+  router.push({
+    path: '/search',
+    query: { q }
+  })
+
   searchQuery.value = ''
   searchOpen.value = false
   menuOpen.value = false
@@ -193,7 +198,7 @@ const socials = [
             ref="searchInput"
             v-model="searchQuery"
             type="text"
-            :placeholder="t('nav.searchPlaceholder')"
+            placeholder="Cari di website..."
             class="bg-white/10 border border-white/20 text-white placeholder-white/40 text-xs px-3 py-[9px] rounded-l-full focus:outline-none focus:border-white/40 w-44 xl:w-56"
             @keyup.enter="submitSearch"
           />
@@ -248,7 +253,7 @@ const socials = [
             <input
               v-model="searchQuery"
               type="text"
-              :placeholder="t('nav.searchPlaceholder')"
+              placeholder="Cari di website..."
               class="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm px-4 py-2.5 rounded-full focus:outline-none focus:border-white/40"
               @keyup.enter="submitSearch"
             />
