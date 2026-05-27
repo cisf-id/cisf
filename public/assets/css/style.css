@@ -2,36 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
   html,
   body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
+@custom-variant hover (&:hover);
 
-  #__nuxt {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  img,
-  video,
-  iframe {
-    max-width: 100%;
-  }
-
+@layer base {
   @font-face {
->>>>>>> parent of a1da6d1 (fix: prevent horizontal overflow)
-  @font-face {
-    font-family: "Montserrat-ExtraLight";
-    src:
-      url("../fonts/Montserrat-ExtraLight.ttf") format("truetype");
     font-weight: 200;
     font-display: swap;
     font-style: normal;
