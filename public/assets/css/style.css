@@ -15,7 +15,6 @@
   #__nuxt {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
   }
 
   *,
@@ -26,8 +25,7 @@
 
   img,
   video,
-  iframe,
-  svg {
+  iframe {
     max-width: 100%;
   }
 
