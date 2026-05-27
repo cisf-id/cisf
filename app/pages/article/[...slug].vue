@@ -151,7 +151,7 @@ const cleanContent = (html: string) => {
 .article-page-bg {
   min-height: 100vh;
   background: #f9f7f4;
-  padding: 72px 16px 80px;
+  padding: 72px 0 80px;
 }
 
 /* ── Loading & Error ── */
@@ -188,9 +188,10 @@ const cleanContent = (html: string) => {
 
 /* ── Article Wrapper ── */
 .article-wrapper {
-  max-width: 820px;
+  max-width: 1100px;
+  width: 92%;
   margin: 0 auto;
-  padding: 48px 44px 60px;
+  padding: 52px 60px 64px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.07);
