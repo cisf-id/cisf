@@ -5,6 +5,32 @@
 @custom-variant hover (&:hover);
 
 @layer base {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  #__nuxt {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  img,
+  video,
+  iframe,
+  svg {
+    max-width: 100%;
+  }
+
   @font-face {
     font-family: "Montserrat-ExtraLight";
     src:
@@ -13,6 +39,7 @@
     font-display: swap;
     font-style: normal;
   }
+
   @font-face {
     font-family: "Montserrat-Light";
     src:
@@ -21,6 +48,7 @@
     font-display: swap;
     font-style: normal;
   }
+
   @font-face {
     font-family: "Montserrat-Regular";
     src:
@@ -29,6 +57,7 @@
     font-display: swap;
     font-style: normal;
   }
+
   @font-face {
     font-family: "Montserrat-Medium";
     src:
@@ -37,6 +66,7 @@
     font-display: swap;
     font-style: normal;
   }
+
   @font-face {
     font-family: "Montserrat-Bold";
     src:
@@ -52,14 +82,25 @@
 }
 
 @layer components {
-  .reveal, .reveal-left, .reveal-right {
+  .reveal,
+  .reveal-left,
+  .reveal-right {
     opacity: 0;
-    transform: translateY(80px);
+    transform: translateY(60px);
     transition: opacity 1s ease, transform 1s ease;
   }
-  .reveal-left { transform: translateX(-80px); }
-  .reveal-right { transform: translateX(80px); }
-  .reveal.in-view, .reveal-left.in-view, .reveal-right.in-view {
+
+  .reveal-left {
+    transform: translateX(-32px);
+  }
+
+  .reveal-right {
+    transform: translateX(32px);
+  }
+
+  .reveal.in-view,
+  .reveal-left.in-view,
+  .reveal-right.in-view {
     opacity: 1;
     transform: none;
   }

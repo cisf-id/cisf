@@ -12,12 +12,9 @@ nuxtApp.hook('vue:error', () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-    <LoadingOverlay />
-    <Navbar />
-    <main>
+  <div class="min-h-screen w-full max-w-full overflow-x-hidden">
+    <NuxtLayout>
       <NuxtPage />
-    </main>
-    <Footer />
+    </NuxtLayout>
   </div>
 </template>
