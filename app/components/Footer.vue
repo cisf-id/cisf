@@ -3,7 +3,7 @@ const { t } = useI18n()
 
 const footerNavMain = computed(() => [
   { label: t('nav.home'), to: '/' },
-  { label: t('nav.aboutUs'), to: '/2025/05/what-is-cisf.html' },
+  { label: t('nav.aboutUs'), to: '/about-cisf' },
   { label: t('nav.statistics'), to: '/statistic' },
 ])
 
